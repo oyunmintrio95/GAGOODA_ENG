@@ -5,15 +5,15 @@
       layout:decorate="~{/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>커뮤니티 메인</title>
+    <title>Community Main</title>
 </head>
 <div layout:fragment="content">
     <div class="container">
-        <h1 class="mt-4">우리집 <span style="color:#B68C68;">GAGOODA</span> </h1>
+        <h1 class="mt-4">Our Home's <span style="color:#B68C68;">GAGOODA</span> </h1>
         <hr style="margin-top: 0; background : #b68c68; height: 5px">
         <div class="d-flex justify-content-end">
             <button class="btn text-white" style="background-color: #B68C68;"
-                    th:onclick="location.href=[[@{'/community/user_yes/register.do'}]]">포스트 등록</button>
+                    th:onclick="location.href=[[@{'/community/user_yes/register.do'}]]">New Post</button>
         </div>
         <div class="row row-cols-1 row-cols-md-2 gap-5 d-flex justify-content-center mb-5">
             <div class="mx-2 my-3 card border border-0 position-relative"

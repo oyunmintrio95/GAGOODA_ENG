@@ -5,7 +5,7 @@
       layout:decorate="~{/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>포스트 상세</title>
+    <title>Post Detail</title>
 </head>
 <div layout:fragment="content">
     <div class="container">
@@ -34,13 +34,13 @@
                 </div>
                 <div class="d-flex justify-content-end mt-2" style="font-size: 14px;">
                     <div>
-                        <span th:text="${#calendars.format(community.regDate,'yyyy년 MM월 dd일')}"></span>
+                        <span th:text="${#calendars.format(community.regDate,'yyyy-MM-dd')}"></span>
                     </div>
                     <div class="ms-4">
-                        <span>조회수: </span><span th:text="${community.views}"></span>
+                        <span>Views: </span><span th:text="${community.views}"></span>
                     </div>
                     <div class="ms-4">
-                        <span>댓글: </span><span th:text="${repCount}"></span>
+                        <span>Reply: </span><span th:text="${repCount}"></span>
                     </div>
                 </div>
             </div>
@@ -50,14 +50,14 @@
         <th:block th:if="${ session.loginUser != null && session.loginUser.userId==community.userId}">
             <div class="d-flex justify-content-end">
                 <button class="btn text-white" style="background-color: #b68c68"
-                        th:onclick="location.href=[[@{'/community/user_yes/{commId}/modify.do'(commId=${community.commId})}]]">수정</button>
+                        th:onclick="location.href=[[@{'/community/user_yes/{commId}/modify.do'(commId=${community.commId})}]]">Edit</button>
                 <button class="btn border ms-2"  style="background-color: #FFFAF5; color: #B68C68;"
-                        th:onclick="location.href=[[@{'/community/user_yes/{commId}/delete.do'(commId=${community.commId})}]]">삭제</button>
+                        th:onclick="location.href=[[@{'/community/user_yes/{commId}/delete.do'(commId=${community.commId})}]]">Delete</button>
             </div>
         </th:block>
 
 
-        <h5 class="fw-bold mt-5" style="color: #B68C68">댓글</h5>
+        <h5 class="fw-bold mt-5" style="color: #B68C68">Reply</h5>
         <hr style="margin-top:0px; background : #b68c68; height: 5px">
         <div th:if="${session.loginUser!=null}" id="replyRegisterContainer">
             <th:block th:include="/community/reply/register"></th:block>
@@ -127,10 +127,10 @@
                     content.value="";
                     await loadReplyList();
                 } else {
-                    alert("등록이 되지 않았습니다.");
+                    alert("Failed to Post.");
                 }
             } else {
-                alert("통신 오류!"+resp.status);
+                alert("error!"+resp.status);
             }
         }
         async function loadReplyList(){
@@ -148,12 +148,12 @@
                 const json=await resp.json();
                 if(json.state===1){
                     await loadReplyList();
-                    alert("삭제 성공!");
+                    alert("Delete Success!");
                 }else{
-                    alert("삭제할 레코드가 없습니다.");
+                    alert("There is no post to delete.");
                 }
             }else{
-                alert(`삭제 실패! ${resp.status}`);
+                alert(`Delete Failed! ${resp.status}`);
             }
         }
         async function loadReplyModifyForm(replyId){
@@ -175,12 +175,12 @@
                 const json=await resp.json();
                 if(json.state===1){
                     await loadReplyList();
-                    alert("수정 성공");
+                    alert("Eidt Success");
                 }else{
-                    alert("이미 삭제된 레코드 입니다.");
+                    alert("The post has already been deleted.");
                 }
             }else{
-                alert("서버 오류 ("+resp.status+")");
+                alert("Server Error ("+resp.status+")");
             }
         }
     </script>

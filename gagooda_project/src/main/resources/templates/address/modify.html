@@ -5,59 +5,59 @@
       layout:decorate="~{/layout/mypageLayout}">
 <head>
   <meta charset="UTF-8">
-  <title>사용자 배송지 수정</title>
+  <title>Edit Delivery Address</title>
 </head>
 <div layout:fragment="myPageContent">
-<h2 class="text-center my-4">사용자 배송지 수정</h2>
+<h2 class="text-center my-4">Edit Address</h2>
   <hr style="margin-bottom: 1; background : #b68c68; height: 5px">
 
   <form action="/address/user_yes/mypage/modify.do" method="post"  enctype="multipart/form-data" class="container mt-5" style="width: 40%; margin-bottom: 200px" name="addressModifyForm">
   <div class="my-3">
-    <label for="aname" class="form-label">주소지 이름</label>
+    <label for="aname" class="form-label">Address Name</label>
     <input type="text" name="aname" class="form-control form-control-lg" id="aname" th:value="${address.getAname}" required>
   </div>
-    <label for="postCode" class="form-label">우편번호</label>
+    <label for="postCode" class="form-label">Postcode</label>
     <div class="my-1 input-group">
       <input type="button" style="background-color: #FFFAF5; color: #B68C68" onclick="DaumPostcode()" value="우편번호 찾기" class="d_btn input-group-text">
       <input type="text" name="postCode" class="form-control form-control-lg" id="postCode" th:value="${address.getPostCode}" required th:readonly="true">
   </div>
   <div  class="my-3">
-    <label for="address" class="form-label">주소</label>
+    <label for="address" class="form-label">Address</label>
     <input type="text" name="address" class="form-control form-control-lg" id="address" th:value="${address.getAddress}" required th:readonly="true">
   </div>
   <div class="my-3">
-    <label for="addressDetail" class="form-label">상세주소</label>
+    <label for="addressDetail" class="form-label">Address Detail</label>
     <input type="text" name="addressDetail" class="form-control form-control-lg" id="addressDetail" th:value="${address.getAddressDetail}" required>
   </div>
   <div class="my-3">
-    <label for="receiverName" class="form-label">수령인 이름</label>
+    <label for="receiverName" class="form-label">Receiver Name</label>
     <input type="text" name="receiverName" class="form-control form-control-lg" id="receiverName" th:value="${address.getReceiverName}" required>
   </div>
   <div class="my-3">
-    <label for="receiverPhone" class="form-label">수령인 전화번호</label>
+    <label for="receiverPhone" class="form-label">Receiver Phone</label>
     <input type="text" id="receiverPhone" class="form-control form-control-lg" name="receiverPhone" th:value="${address.getReceiverPhone}" required>
   </div>
     <span id="phoneCheckMsg"></span>
 
   <fieldset class="my-3">
-    <legend>기본 배송지 설정 여부</legend>
+    <legend>Default Delivery Address</legend>
     <div>
-      <label for="homeTrue">맞음</label>
+      <label for="homeTrue">Yes</label>
       <input type="radio" name="home" id="homeTrue" value="1" th:checked="${address.home==true}">
     </div>
     <div>
-      <label for="homeFalse">아님</label>
+      <label for="homeFalse">No</label>
       <input type="radio" name="home" id="homeFalse" value="0" th:checked="${address.home==false}">
     </div>
   </fieldset>
   <fieldset class="my-3">
-    <legend>엘레베이터 유무 여부</legend>
+    <legend>Elevator</legend>
     <div>
-      <label for="elevatorTrue">있음</label>
+      <label for="elevatorTrue">Yes</label>
       <input type="radio" name="elevator" id="elevatorTrue" value="1" th:checked="${address.elevator==true}">
     </div>
     <div>
-      <label for="elevatorFalse">없음</label>
+      <label for="elevatorFalse">No</label>
       <input type="radio" name="elevator" id="elevatorFalse" value="0"  th:checked="${address.elevator==false}">
     </div>
   </fieldset>
@@ -75,7 +75,7 @@
     const addressModifyForm = document.forms["addressModifyForm"];
     function DaumPostcode() {
 
-      new daum.Postcode({
+      new daum.Postcode({ //API that helps user to find postcode and address
         oncomplete: function(data) {
           // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
@@ -123,7 +123,7 @@
     }
     function deleteCheck() {
 
-      let result = confirm("정말로 삭제하시겠습니까?");
+      let result = confirm("Do you really want to delete?");
       if (result==true) {
         location.href = "delete.do?address_id="+document.getElementById("addressId").value;
       } else {
@@ -141,16 +141,16 @@
       if (phone.value === "") {
         phoneCheckMsg.innerText = "";
       } else if (isNaN(phone.value)) {
-        phoneCheckMsg.innerText = "전화번호를 정확히 입력해주세요.";
+        phoneCheckMsg.innerText = "Please enter correct phone number.";
         phoneCheckMsg.setAttribute("style","color: #e53b3b;");
       }else if (phone.value.length !== 11) {
-        phoneCheckMsg.innerText = "전화번호 11자리를 정확히 입력해 주세요.";
+        phoneCheckMsg.innerText = "Please enter 11 digits for phone number.";
         phoneCheckMsg.setAttribute("style","color: #e53b3b;");
       } else if (phone.value.slice(0,3) !== '010' ) {
-        phoneCheckMsg.innerText = "전화번호 앞 3자리는 010 이어야 합니다."
+        phoneCheckMsg.innerText = "The first three digits of the phone number must be 010."
         phoneCheckMsg.setAttribute("style","color: #e53b3b;");
       } else {
-        phoneCheckMsg.innerText = "올바른 전화번호 입니다.";
+        phoneCheckMsg.innerText = "You've entered the right number.";
         phoneCheckMsg.setAttribute("style","color: #0f9105;");
         return true;
       }

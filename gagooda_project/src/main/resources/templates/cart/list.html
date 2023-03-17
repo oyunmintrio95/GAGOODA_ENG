@@ -5,7 +5,7 @@
       layout:decorate="~{/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>장바구니 목록</title>
+    <title>Shopping Cart</title>
     <style>
         /*input[id="allCheck"] + label {*/
         /*    display: inline-block;*/
@@ -45,26 +45,26 @@
 <body>
     <div layout:fragment="content">
         <div class="container">
-            <h3 class="py-5 m-0 text-center">장바구니</h3>
+            <h3 class="py-5 m-0 text-center">Shopping Cart</h3>
             <hr>
             <form th:action method="get">
                 <th:block th:if="${cartList.size() > 0}">
                     <div class="container text-center">
                         <div style="margin: 30px 0;">
-                            <b class="text-center">주문하실 상품을 선택해주세요.</b>
+                            <b class="text-center">Please select items to order.</b>
                         </div>
                         <table class="table border-top mt-3">
                             <thead>
                                 <tr style="background: #B68C68; color: #ffffff">
-                                    <th>전체 <span th:text="${cartList.size()}"></span>개</th>
+                                    <th>All <span th:text="${cartList.size()}"></span>개</th>
                                     <th>
                                         <input type="checkbox" class="allCheck" id="allCheck" checked style="cursor: pointer;">
                                         <label for="allCheck" class="allCheckLabel"></label>
                                     </th>
-                                    <th colspan="2">상품정보</th>
-                                    <th>가격</th>
-                                    <th>수량</th>
-                                    <th>합계</th>
+                                    <th colspan="2">Product Info</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,24 +107,24 @@
 
                     <div class="d-block">
                         <div class="float-start">
-                            <button type="button" class="delOneBtn btn btn-light border" style="width: 120px; font-size: small;" onclick="cartDelOne()">선택상품 삭제</button>
-                            <button type="button" class="delAllBtn btn btn-light border" style="width: 120px; font-size: small;" onclick="cartDelAll()">전체상품 삭제</button>
+                            <button type="button" class="delOneBtn btn btn-light border" style="width: 120px; font-size: small;" onclick="cartDelOne()">Delete selected items</button>
+                            <button type="button" class="delAllBtn btn btn-light border" style="width: 120px; font-size: small;" onclick="cartDelAll()">Delete all items</button>
                         </div>
                         <div class="float-end" style="font-size: large">
-                            <div>총 주문금액: <strong id="totalPrice" class="totalPrice" style="color: #B68C68" th:text="${totalPrice}"></strong> 원</div>
-                            <div>총 주문수량: <strong id="totalCnt" class="totalCnt" style="color: #B68C68" th:text="${totalCnt}"></strong> 개</div>
+                            <div>Subtotal: <strong id="totalPrice" class="totalPrice" style="color: #B68C68" th:text="${totalPrice}"></strong> 원</div>
+                            <div>Total item(s): <strong id="totalCnt" class="totalCnt" style="color: #B68C68" th:text="${totalCnt}"></strong> 개</div>
                         </div>
                     </div>
                     <div class="d-block text-center mb-5">
                         <div style="margin-top: 100px">
-                            <button type="button" class="orderOneBtn btn btn-secondary" style="width: 180px; font-size: small;" onclick="orderOne()">선택상품 주문</button>
-                            <button type="button" class="orderAllBtn btn btn-danger" style="width: 180px; font-size: small;" onclick="orderAll()">전체상품 주문</button>
+                            <button type="button" class="orderOneBtn btn btn-secondary" style="width: 180px; font-size: small;" onclick="orderOne()">Order selected items</button>
+                            <button type="button" class="orderAllBtn btn btn-danger" style="width: 180px; font-size: small;" onclick="orderAll()">Order all items</button>
                         </div>
                     </div>
                 </th:block>
                 <th:block th:if="${cartList.size() == 0}">
                     <div class="container" style="margin: 30px 0;">
-                        <b class="text-center">장바구니가 비었습니다...</b>
+                        <b class="text-center">The cart is empty.</b>
                     </div>
                 </th:block>
             </form>
@@ -217,10 +217,10 @@
         const selectedElementsCnt = selectedElements.length;
 
         if (selectedElementsCnt == 0) {
-            alert("삭제할 항목이 없습니다.");
+            alert("There are no items to delete.");
             return false;
         } else {
-            if (confirm("정말로 전체삭제하시겠습니까?")) {
+            if (confirm("Do you really want to delete?")) {
                 const form = document.createElement('form');
                 form.setAttribute('method', 'post');
                 form.setAttribute('action', '/cart/user_yes/mypage/deleteAll.do');
@@ -238,10 +238,10 @@
         const selectedElementsCnt = selectedElements.length;
 
         if (selectedElementsCnt == 0) {
-            alert("삭제할 항목을 선택해주세요.");
+            alert("Please select items to delete.");
             return false;
         } else {
-            if (confirm("정말로 삭제하시겠습니까?")) {
+            if (confirm("Do you really want to delete?")) {
                 //배열생성
                 const arr = new Array(selectedElementsCnt);
 
@@ -272,7 +272,7 @@
         const selectedElementsCnt = selectedElements.length;
 
         if (selectedElementsCnt == 0) {
-            alert("주문할 상품이 없습니다.");
+            alert("There are no items to order.");
             return false;
         } else {
             const arr = new Array(selectedElementsCnt);
@@ -302,7 +302,7 @@
         const selectedElementsCnt = selectedElements.length;
 
         if (selectedElementsCnt == 0) {
-            alert("주문할 상품이 없습니다.");
+            alert("There are no items to order.");
             return false;
         } else {
             allCheck.checked = true;

@@ -5,20 +5,20 @@
       layout:decorate="~{/layout/mypageLayout}">
 <head>
   <meta charset="UTF-8">
-  <title>배송지 리스트</title>
+  <title>My Delivery Addresses</title>
 </head>
 <div layout:fragment="myPageContent">
-<h2 class="my-4">배송지 리스트</h2>
+<h2 class="my-4">My Delivery Addresses</h2>
   <button type="button" class="input-group-text"  th:onclick="|location.href='@{/address/user_yes/mypage/register.do }'|"  style="background-color: #FFFAF5; color: #B68C68" th:text="'새 배송지 등록'"></button>
   <hr style="margin-bottom: 1; background : #b68c68; height: 5px">
 <table class="table">
   <thead>
-    <th scope="col">주소지 이름</th>
-    <th scope="col">우편번호</th>
-    <th scope="col">주소</th>
-    <th scope="col">상세 주소</th>
-    <th scope="col"  class="text-center">기본 배송지</th>
-    <th scope="col"  class="text-center">엘레베이터</th>
+    <th scope="col">Address Name</th>
+    <th scope="col">Postcode</th>
+    <th scope="col">Address</th>
+    <th scope="col">Address Detail</th>
+    <th scope="col"  class="text-center">Default</th>
+    <th scope="col"  class="text-center">Elevator</th>
   </thead>
   <tbody>
     <tr th:each="a:${alist}" style="cursor: pointer">

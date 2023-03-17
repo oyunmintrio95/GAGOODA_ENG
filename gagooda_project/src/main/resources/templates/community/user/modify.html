@@ -5,10 +5,10 @@
       layout:decorate="~{/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>포스트 수정 페이지</title>
+    <title>Edit Post</title>
 </head>
 <div layout:fragment="content">
-<h1>포스트 수정 페이지</h1>
+<h1>Edit Post</h1>
     <form action="/community/user_yes/modify.do" method="post" enctype="multipart/form-data">
         <input type="text" name="commId" th:value="${community.commId}">
 
@@ -17,7 +17,7 @@
             <input type="text" name="userId" id="userId" class="form-control" th:value="${session.loginUser.userId}">
         </div>
        <div>
-           <label for="imgFile">이미지 첨부</label><span style="color: #a4a4a4; margin-left: 30px;">체크박스 클릭 후 제출시 체크된 기존사진은 삭제됩니다</span>
+           <label for="imgFile">Upload Images</label><span style="color: #a4a4a4; margin-left: 30px;">The original images that checked will be deleted after you submit.</span>
            <input multiple="multiple" type="file" id="imgFile" name="imgFile" class="form-control">
            <input type="hidden" name="imgCode" id="imgCode" th:value="${community.imgCode}">
            <div>
@@ -31,30 +31,30 @@
 
        </div>
         <div class="mb-3">
-            <label for="content" class="form-label">내용</label>
+            <label for="content" class="form-label">Content</label>
             <textarea class="form-control" name="content" th:value="${community.content}" th:text="${community.content}"
                       id="content" cols="30" rows="3" required></textarea>
         </div>
         <div class="d-grid d-flex gap-2 float-end">
             <button class="btn btn-sm" style="background-color: #FFFAF5; color: #b68c68" type="reset"
-                    th:onclick="cancel([[${community.commId}]])">취소
+                    th:onclick="cancel([[${community.commId}]])">Cancel
             </button>
             <button class="btn btn-sm" style="background-color: #b68c68; color: #FFFAF5 " type="submit"
-                    th:onclick="modifyCommunity([[${community.commId}]])">수정
+                    th:onclick="modifyCommunity([[${community.commId}]])">Edit
             </button>
         </div>
 
     </form>
     <script>
         function modifyCommunity(commId) {
-            let result = confirm("포스트를 수정하시겠습니까 ?");
+            let result = confirm("Do you want to change the post?");
             if (result == true) {
                 location.href = '/community/'+commId+'/detail.do';
             }
         }
 
         function cancel(commId) {
-            let result = confirm("포스트 수정을 취소하시겠습니까 ?");
+            let result = confirm("Do you want to cancel editing the post?");
             if (result == true) {
                 location.href = '/community/'+commId+'/detail.do';
             }
