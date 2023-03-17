@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.gagooda_project.mapper.ProductInquiryMapper">
+    <resultMap id="productInquiryMap" type="ProductInquiryDto" autoMapping="true">
+        <result column="p_inquiry_id" property="pInquiryId" />
+        <result column="user_id" property="userId" />
+        <result column="option_code" property="optionCode" />
+        <result column="product_code" property="productCode" />
+        <result column="reg_date" property="regDate" />
+        <result column="reply_date" property="replyDate" />
+        <result column="reply_id" property="replyId" />
+        <result column="pi_det" property="piDet" />
+        <association property="user"
+                     column="user_id"
+                     select="com.example.gagooda_project.mapper.UserMapper.findById"
+                     fetchType="lazy"/>
+        <association property="optionProductDto"
+                     column="option_code"
+                     select="com.example.gagooda_project.mapper.OptionProductMapper.findById"
+                     fetchType="lazy"/>
+        <association property="commonCodeDto"
+                     column="pi_det"
+                     select="com.example.gagooda_project.mapper.CommonCodeMapper.findByDetCode"
+                     fetchType="lazy"/>
+        <association property="productDto"
+                     column="product_code"
+                     select="com.example.gagooda_project.mapper.ProductMapper.findById"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <insert id="insertOne" useGeneratedKeys="true" keyProperty="pInquiryId">
+        INSERT INTO
+            product_inquiry ( user_id, option_code, product_code, title, content, secret, pi_det)
+            VALUES ( #{userId}, #{optionCode}, #{productCode}, #{title}, #{content}, #{secret}, #{piDet})
+    </insert>
+    <update id="updateReplyInTable" parameterType="ProductInquiryDto">
+        UPDATE product_inquiry SET reply=#{reply}, reply_date=NOW(), reply_id=#{replyId} WHERE p_inquiry_id=#{pInquiryId}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM product_inquiry WHERE p_inquiry_id=#{pInquiryId}
+    </delete>
+    <select id="listByProductCode" resultMap="productInquiryMap" parameterType="pagingDto">
+        SELECT * FROM product_inquiry WHERE product_code=#{productCode}
+                                      ORDER BY ${paging.orderField} ${paging.direct}
+                                      LIMIT #{paging.startRow}, #{paging.rows}
+    </select>
+    <select id="listAll" resultMap="productInquiryMap">
+        SELECT * FROM product_inquiry
+    </select>
+    <select id="findById" resultMap="productInquiryMap">
+        SELECT * FROM product_inquiry WHERE p_inquiry_id=#{pInquiryId}
+    </select>
+    <select id="countByPInquiryId" resultType="java.lang.Integer" parameterType="PagingDto">
+        SELECT COUNT(*) FROM product_inquiry WHERE product_code=#{productCode}
+    </select>
+    <select id="pageAll" resultMap="productInquiryMap" parameterType="pagingDto" >
+        SELECT * FROM product_inquiry
+            ORDER BY ${orderField} ${direct}
+            LIMIT #{startRow}, #{rows}
+    </select>
+    <select id="count" resultType="java.lang.Integer" parameterType="PagingDto">
+        SELECT COUNT(*) FROM product_inquiry
+    </select>
+    <select id="listByProductCodeAll" resultMap="productInquiryMap">
+        SELECT * FROM product_inquiry WHERE product_code=#{productCode}
+    </select>
+    <select id="countByUserId" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM product_inquiry WHERE user_id=#{userId}
+    </select>
+    <select id="listByUserId" resultMap="productInquiryMap" >
+        SELECT * FROM product_inquiry WHERE user_id=#{userId}
+        ORDER BY ${paging.orderField} ${paging.direct} LIMIT #{paging.startRow},#{paging.rows}
+    </select>
+</mapper>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/mypageLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div layout:fragment="myPageContent">
+
+        <div>
+            <h1>교환/환불 신청서</h1>
+            <hr style="margin-top: 0; background : #b68c68; height: 5px">
+            <a class="d-flex justify-content-end text-decoration-none text-black" href="javascript:void(0)" onclick="goBack()">뒤로가기</a>
+            <script>
+                function goBack(){
+                    window.history.back();
+                }
+            </script>
+        </div>
+
+    <div class="container mb-5" >
+        <h4 class="mt-5 mb-3">주문 정보</h4>
+        <hr style="margin-top: 0; background : #b68c68; height: 5px">
+        <table class="table">
+            <tr>
+                <th class="col-2">주문인</th>
+                <td class="col-4" th:text="${order.userName}"></td>
+                <th class="col-2">주문날짜</th>
+                <td class="col-4" th:text="${#calendars.format(order.regDate, 'yyyy-MM-dd') }"></td>
+            </tr>
+            <tr>
+                <th class="col-2">주문 상품명</th>
+                <td class="col-4" th:text="${order.orderDetailList[0].optionName}+' 등 '+ ${order.orderDetailList.size()} + '건'"></td>
+                <th class="col-2">총 주문 금액</th>
+                <td class="col-4" th:text="${order.totalPrice}"></td>
+            </tr>
+            <tr>
+                <th>주문번호</th>
+                <td th:text="${order.orderId}"></td>
+                <th class="col-2"></th>
+                <td class="col-4"></td>
+            </tr>
+
+        </table>
+
+
+        <form name="refundRegister" id="refundRegister" th:action="@{'/refund/user_yes/mypage/{orderDetailId}/register.do' (orderDetailId = ${orderDetailId})}" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="userId" name="userId" th:value="${order.userId}">
+            <input type="hidden" id="uname" name="uname" th:value="${order.userName}">
+            <input type="hidden" id="email" name="email" th:value="${order.userEmail}">
+            <input type="hidden" id="phone" name="phone" th:value="${order.userPhone}">
+            <input type="hidden" id="orderId" name="orderId" th:value="${order.orderId}">
+            <fieldset class="mt-5">
+                <div class="flex-column">
+                    <legend>교환/환불 정보</legend>
+                    <hr style="margin-top: 0; background : #b68c68; height: 5px">
+                    <div class="d-flex justify-content-around">
+                        <div class="col-5">
+                            <div>신청 유형</div>
+                            <div class="d-flex mt-1">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="radio" id="refundType" name="reType" value="true" required>
+                                    <label class="form-check-label" for="refundType">환불</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="exchangeType" name="reType" value="false" required>
+                                    <label class="form-check-label" for="exchangeType">교환</label>
+                                </div>
+                            </div>
+                            <div class="mt-1">
+                                <label for="orderDetailId">교환/환불 대상 상품</label>
+                                <input type="hidden" th:value="${orderDetail.orderDetailId}" id="orderDetailId" th:data-amount="${orderDetail.totalPrice}" th:data-cnt="${orderDetail.cnt}">
+                                <span class="form-control" th:text="${orderDetail.optionName}"></span>
+                            </div>
+                            <div class="d-none refundInput mt-1">
+                                <label class="d-block">환불 금액
+                                    <!-- 교환, 환불 모두 신청되어 있지 않을 때 -->
+                                    <input th:if="${exchangedCnt == 0 && refundAmount == 0}" class="form-control" type="text" th:value="${orderDetail.totalPrice}" name="cancelAmount" readonly>
+                                    <!-- 교환만 부분 신청이 되어 있을 때-->
+                                    <input th:if="${exchangedCnt != 0 && refundAmount == 0}" class="form-control" type="text" th:value="${orderDetail.totalPrice - (orderDetail.price * exchangedCnt)}" name="cancelAmount" readonly>
+                                    <!-- 환불만 부분 신청이 되어 있을 때-->
+                                    <input th:if="${exchangedCnt == 0 && refundAmount != 0}" class="form-control" type="text" th:value="${orderDetail.totalPrice - refundAmount}" name="cancelAmount" readonly>
+                                    <!-- 교환, 환불 모두 부분 신청이 되어 있을 때-->
+                                    <input th:if="${exchangedCnt != 0 && refundAmount != 0}" class="form-control" type="text" th:value="${orderDetail.totalPrice - (orderDetail.price * exchangedCnt) - refundAmount}" name="cancelAmount" readonly>
+                                </label>
+                            </div>
+
+                            <div class="d-none exchangeInput mt-1">
+                                <label class="d-block">교환 수량
+                                    <!-- 교환, 환불 모두 신청되어 있지 않을 때 -->
+                                    <input th:if="${exchangedCnt == 0 && refundAmount == 0}" class="form-control cnt" type="number" name="cnt" th:max="${orderDetail.cnt}" min="1"
+                                           oninput="(!this.value)?this.value=1:this.value" th:value="${orderDetail.cnt}">
+                                    <!-- 교환만 부분 신청이 되어 있을 때-->
+                                    <input th:if="${exchangedCnt != 0 && refundAmount == 0}" class="form-control cnt" type="number" name="cnt" th:max="${orderDetail.cnt - exchangedCnt}" min="1"
+                                           oninput="(!this.value)?this.value=1:this.value" th:value="${orderDetail.cnt - exchangedCnt}">
+                                    <!-- 환불만 부분 신청이 되어 있을 때-->
+                                    <input th:if="${exchangedCnt == 0 && refundAmount != 0}" class="form-control cnt" type="number" name="cnt" th:max="${orderDetail.cnt - (refundAmount / orderDetail.price)}" min="1"
+                                           oninput="(!this.value)?this.value=1:this.value" th:value="${orderDetail.cnt - (refundAmount / orderDetail.price)}">
+                                    <!-- 교환, 환불 모두 부분 신청이 되어 있을 때-->
+                                    <input th:if="${exchangedCnt != 0 && refundAmount != 0}" class="form-control cnt" type="number" name="cnt" th:max="${orderDetail.cnt - exchangedCnt - (refundAmount / orderDetail.price)}" min="1"
+                                           oninput="(!this.value)?this.value=1:this.value" th:value="${orderDetail.cnt - exchangedCnt - (refundAmount / orderDetail.price)}">
+                                </label>
+                            </div>
+                            <script th:inline="javascript">
+
+                            </script>
+                            <div class="mt-1">
+                                <label for="imgFileList" class="form-label">첨부 이미지</label>
+                                <input class="form-control" type="file" name="imgFileList" id="imgFileList">
+                            </div>
+                            <div class="mt-1">
+                                <label for="rfrDet">교환/환불 사유 카테고리</label>
+                                <select class="form-select" name="rfrDet" id="rfrDet" required>
+                                    <option value="" selected disabled>요청 유형을 선택해주세요.</option>
+                                    <option value="rfr0">단순 변심</option>
+                                    <option value="rfr1">상품 문제</option>
+                                    <option value="rfr2">배송 문제</option>
+                                    <option value="rfr3">기타</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div>
+                                <label for="reason">상세 환불 사유</label>
+                                <textarea class="form-control" style="resize: none;" rows="10" id="reason" name="reason" placeholder="환불 사유를 작성해주세요." required></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mt-5">
+                <legend>물품 수거지 주소</legend>
+                <hr style="margin-top: 0; background : #b68c68; height: 5px">
+                <input type="hidden" id="addressId" name="addressId" class="realValue" th:value="${order.addressId}">
+                <input type="hidden" id="elevator" name="elevator" class="realValue" th:value="${order.elevator}">
+                <div>
+                    <div  class="d-flex justify-content-around">
+                        <div class="col-5">
+                            <div id="loadAddressList">
+                                <th:block th:include="refund/user/newAddress.html"></th:block>
+                            </div>
+                            <div class="mt-1">
+                                <label for="postCode">우편번호</label>
+                                <input type="text" readonly id="postCode" name="postCode" class="realValue form-control" th:value="${order.postCode}">
+                            </div>
+                            <div class="mt-1">
+                                <label for="address">주소</label>
+                                <input type="text" readonly id="address" name="address" class="realValue form-control" th:value="${order.address}">
+                            </div>
+                            <div class="mt-1">
+                                <label for="addressDetail">상세 주소</label>
+                                <input type="text" readonly id="addressDetail" name="addressDetail" class="realValue form-control" th:value="${order.addressDetail}">
+                            </div>
+                            <div class="mt-1">
+                                <label for="receiverName">수령인 이름</label>
+                                <input type="text" readonly id="receiverName" name="receiverName" class="realValue form-control" th:value="${order.receiverName}">
+                            </div>
+                            <div class="mt-1">
+                                <label for="receiverPhone">수령인 전화번호</label>
+                                <input type="text" readonly id="receiverPhone" name="receiverPhone" class="realValue form-control" th:value="${order.receiverPhone}">
+                            </div>
+                            <div class="mt-1">
+                                <div>엘리베이터 유무</div>
+                                <div class="realValue form-control" th:text="${order.isElevator()}? 'O' : 'X'"></div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-control mt-5">
+                                <h5 class="ms-2 mt-2">수거지 주소 유의사항</h5>
+                                <ul class="form-text">
+                                    <li>교환/환불 시 고객님이 수령하신 물품을 수거하러 갈 주소를 입력하는 곳입니다.</li>
+                                    <li class="mt-1">따로 선택하지 않을 시 주문하실 때 선택한 배송지가 기본적으로 선택됩니다.</li>
+                                    <li class="mt-1">주문 배송지 외의 주소에서 물품 수거를 희망하는 고객님은 본인의 배송지 목록 혹은 새 주소 입력을 통해 주소를 새로 설정해주시기 바랍니다.</li>
+                                    <li class="mt-1">제주 외 도서ㆍ산간 지역은 배송료가 생길 수 있습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+            <div class="d-flex justify-content-end">
+                <button name="refundSubmit" id="refundSubmit" form="refundRegister" type="submit" class="btn text-white me-2" style="background-color: #B68C68;">신청하기</button>
+            </div>
+
+        </form>
+    </div>
+
+        <div class="modal fade" id="addressBtn" tabindex="-1" aria-labelledby="addressTitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addressTitle">주소지 등록</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="javascript:void(0)" id="addressRegister" method="POST" name="addressRegister" onsubmit="newAddressSubmit()">
+                            <input type="hidden" name="newCheck" value="new">
+                            <input type="hidden" name="userId" id="newUserId" th:value="${session.loginUser.userId}" readonly>
+                            <div>
+                                <label for="newAname">주소지 이름</label>
+                                <input class="form-control" type="text" name="aname" id="newAname" required>
+                            </div>
+                            <div class="d-flex justify-content-end mt-2">
+                                <input type="button" onclick="DaumPostcode()" value="우편번호 찾기" class="d_btn btn" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;">
+                            </div>
+                            <div>
+                                <label for="newPostCode">우편번호</label>
+                                <input class="form-control" type="number" name="postCode" id="newPostCode" readonly required>
+                            </div>
+                            <div>
+                                <label for="newAddress">주소</label>
+                                <input class="form-control" type="text" name="address" id="newAddress" readonly required>
+                            </div>
+                            <div>
+                                <label for="newAddressDetail">상세주소</label>
+                                <input class="form-control" type="text" name="addressDetail" id="newAddressDetail" required>
+                            </div>
+                            <div>
+                                <label for="newReceiverName">수령인 이름</label>
+                                <input class="form-control" type="text" name="receiverName" id="newReceiverName" required>
+                            </div>
+                            <fieldset>
+                                <label for="newReceiverPhone">수령인 전화번호</label>
+                                <input class="form-control" type="text" id="newReceiverPhone" name="receiverPhone" maxlength="11" required
+                                       pattern="^(010)[0-9]{8}" oninput="this.value=this.value.replace(/[^0-9,]/g,'');" title="'010XXXXXXXX'으로 작성해 주세요." >
+                            </fieldset>
+
+                            <div class="form-check">
+                                <label class="form-check-label" for="newHome">기본 배송지 설정 여부</label>
+                                <input class="form-check-input" type="checkbox" name="home" id="newHome" value="1">
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="newElevator">엘레베이터 유무 여부</label>
+                                <input class="form-check-input" type="checkbox" name="elevator" id="newElevator" value="1" >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="closeBtn" class="btn" data-bs-dismiss="modal" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;">닫기</button>
+                        <button type="submit" form="addressRegister" name="addressSubmit" class="btn text-white" style="background-color: #B68C68;" >등록하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script th:inline="javascript">
+
+            let newAddressRegister = document.forms.addressRegister;
+            let refundRegister = document.forms.refundRegister;
+            // refundRegister.cancelAmount.value = refundRegister.orderDetailId.dataset.amount;
+            // refundRegister.cnt.value = refundRegister.orderDetailId.dataset.cnt;
+
+            /* 교환/환불 radio 클릭에 따라 해당 input 보여주기 */
+            let reType = refundRegister.reType;
+            console.log(reType)
+            reType.forEach(element=>{
+                let refund = document.querySelector(".refundInput");
+                let exchange = document.querySelector(".exchangeInput");
+                element.addEventListener("change",()=>{
+                    console.log(element.value)
+                    console.log(typeof(element.value))
+                    if (element.value === "true"){
+                        refund.classList.remove("d-none")
+                        if (!exchange.classList.contains("d-none")){
+                            exchange.classList.add("d-none")
+                        }
+                    }else{
+                        exchange.classList.remove("d-none")
+                        if (!refund.classList.contains("d-none")){
+                            refund.classList.add("d-none")
+                        }
+                    }
+                })
+            })
+
+            /* exchange cnt 값이 max를 넘었을 때, max 값으로 재정의 */
+            let exchangeCnt = document.querySelector(".cnt");
+            exchangeCnt.onchange=()=>{
+                if (exchangeCnt.value > exchangeCnt.max){
+                    exchangeCnt.value = exchangeCnt.max;
+                }
+            }
+
+            /* 새 주소 등록 후 등록 주소 input 창에 넣기 */
+            const realAddressList = document.querySelectorAll(".realValue");
+            function changeAdd(){
+                let addressSlt = document.getElementById("myAddressList");
+                document.getElementById("addressId").value = addressSlt.options[addressSlt.selectedIndex].value;
+                console.log(addressSlt.options[addressSlt.selectedIndex].dataset.address, typeof(addressSlt.options[addressSlt.selectedIndex].dataset.address) );
+
+                let addressId = addressSlt.options[addressSlt.selectedIndex].dataset['addressid'];
+                let postCode = addressSlt.options[addressSlt.selectedIndex].dataset['postcode'];
+                let address = addressSlt.options[addressSlt.selectedIndex].dataset['address'];
+                let addressDetail = addressSlt.options[addressSlt.selectedIndex].dataset['addressdetail'];
+                let receiverName = addressSlt.options[addressSlt.selectedIndex].dataset['receivername'];
+                let receiverPhone = addressSlt.options[addressSlt.selectedIndex].dataset['receiverphone'];
+                let elevator = addressSlt.options[addressSlt.selectedIndex].dataset['elevator'];
+
+                realAddressList[0].value = addressId;
+                realAddressList[1].value = elevator;
+                realAddressList[2].value = postCode;
+                realAddressList[3].value = address;
+                realAddressList[4].value = addressDetail;
+                realAddressList[5].value = receiverName;
+                realAddressList[6].value = receiverPhone;
+                realAddressList[7].innerText = (elevator==="true")?"O":"X";
+            }
+
+            /* new 모달창 새 주소 등록 */
+            async function newAddressSubmit(){
+                let orderDetailId = [[${orderDetail.orderDetailId}]]
+                console.log(orderDetailId)
+                if(orderDetailId){
+                    let url = "/refund/user_yes/mypage/"+orderDetailId+"/addressRegister.do";
+                    let addressForm = document.forms.addressRegister;
+                    let formData = new FormData(addressForm);
+                    console.log(formData);
+                    const resp = await fetch(url, {method: "POST", body: formData})
+                    console.log("resp: "+ resp);
+                    if(resp.status === 200){
+                        const json = await resp.json()
+                        let addressUrl = "/refund/user_yes/mypage/"+orderDetailId+"/addressList.do"
+                        const addressListResp = await fetch(addressUrl);
+                        console.log()
+                        if(addressListResp.status === 200){
+                            const addressListText = await addressListResp.text();
+                            console.log("text: "+addressListText);
+                            let loadAddressList = document.getElementById("loadAddressList");
+                            loadAddressList.innerHTML = addressListText;
+                            addressForm.reset();
+                            let closeBtn = document.getElementById("closeBtn")
+                            closeBtn.click();
+                            console.log(json.address)
+                            console.log(json.addressDetail)
+                            realAddressList[0].value = json.addressId;
+                            realAddressList[1].value = json.elevator;
+                            realAddressList[2].value = json.postCode;
+                            realAddressList[3].value = json.address;
+                            realAddressList[4].value = json.addressDetail;
+                            realAddressList[5].value = json.receiverName;
+                            realAddressList[6].value = json.receiverPhone;
+                            realAddressList[7].innerText = (json.elevator==="true")?"O":"X";
+
+                        }else{
+                            alert(`주소 목록 요청 실패: ${addressListResp.status}`)
+                        }
+                        console.log("json: "+json)
+                    }else{
+                        alert(`새 주소 등록 요청 실패: ${resp.status}`)
+                    }
+                }
+            }
+
+            /* 우편번호 API */
+            function DaumPostcode() {
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        let addr = ''; // 주소 변수
+                        let extraAddr = ''; // 참고항목 변수
+
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                        if(data.userSelectedType === 'R'){
+                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                                extraAddr += data.bname;
+                            }
+                            // 건물명이 있고, 공동주택일 경우 추가한다.
+                            if(data.buildingName !== '' && data.apartment === 'Y'){
+                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                            if(extraAddr !== ''){
+                                extraAddr = ' (' + extraAddr + ')';
+                            }
+                            // 조합된 참고항목을 해당 필드에 넣는다.
+                            document.getElementById("addressDetail").value = extraAddr;
+
+                        } else {
+                            document.getElementById("addressDetail").value = '';
+                        }
+
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById('newPostCode').value = data.zonecode;
+                        document.getElementById("newAddress").value = addr;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("addressDetail").focus();
+                    }
+                }).open();
+            }
+
+        </script>
+</div>
+</html>

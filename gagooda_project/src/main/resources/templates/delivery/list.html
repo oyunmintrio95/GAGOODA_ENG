@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/adminLayout.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>배송 목록</title>
+</head>
+<div layout:fragment="content">
+  <h2>배송 목록</h2>
+  <form action="/delivery/admin/list.do" method="get" id="searchForm" name="searchForm">
+    <div>
+      <label class="d-block">검색 키워드 :
+        <select name="searchDiv" id="searchDiv">
+          <option value="" selected disabled>검색 분류 선택</option>
+          <option value="all">전체</option>
+          <option value="order_id">주문번호</option>
+          <option value="user_name">주문자 이름</option>
+          <option value="user_email">주문자 이메일</option>
+        </select>
+        <input type="text" id="searchWord" name="searchWord">
+      </label>
+      <label class="d-block">검색 일시 :
+        <select name="dateType" id="dateType">
+          <option selected disabled>검색 일시 분류</option>
+          <option value="start_date">배송 시작일</option>
+          <option value="end_date">배송 완료일</option>
+        </select>
+        <input type="date" id="startDate" name="startDate"> ~
+        <input type="date" id="endDate" name="endDate">
+      </label>
+      <div class="d-flex">
+        <span>진행 상태 :</span>
+        <label><input type="checkbox" name="dDet" id="d0" value="d0" > 주문 확인 </label>
+        <label><input type="checkbox" name="dDet" id="d1" value="d1" > 배송 준비 </label>
+        <label><input type="checkbox" name="dDet" id="d2" value="d2" > 배송 중 </label>
+        <label><input type="checkbox" name="dDet" id="d3" value="d3" > 배송 완료 </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline-secondary">검색</button>
+    <button name="reset" type="reset">초기화</button>
+  </form>
+  <h3 class="my-4">배송 현황 목록</h3>
+  <hr style="margin-bottom: 0; background : #b68c68; height: 5px">
+
+  <table class="table">
+    <thead>
+    <tr>
+      <!--            <th>No.</th>-->
+      <th>주문 ID</th>
+      <th>주문자 ID</th>
+      <th>주문자 이름</th>
+      <th>주문자 이메일</th>
+      <th>주문자 전화번호</th>
+      <th>운송장</th>
+      <th>배송 시작일</th>
+      <th>배송 완료일</th>
+      <th>배송 상태</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:if="${deliveryCount >= 0}" th:each="delivery : ${deliveryList}" >
+      <tr>
+        <td th:text="${delivery.orderId}"></td>
+        <td th:text="${delivery.userId}"></td>
+        <td th:text="${delivery.userName}"></td>
+        <td th:text="${delivery.userEmail}"></td>
+        <td th:text="${delivery.userPhone}"></td>
+        <td th:text="${delivery.invoice}"></td>
+        <td th:text="${#calendars.format(delivery.startDate, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#calendars.format(delivery.endDate, 'yyyy-MM-dd')}"></td>
+        <td th:text="${delivery.DDetDto.detName}"></td>
+        <td><button type="button" th:onclick="|location.href='@{/delivery/admin/{orderId}/modify.do (orderId=${delivery.orderId})}'|">수정하기</button></td>
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+  <th:block th:unless="${deliveryCount >= 0}"><div>배송 내역이 존재하지 않습니다.</div></th:block>
+  <!--pagination-->
+  <nav aria-label="Page navigation" class="d-flex justify-content-center">
+    <ul class="pagination">
+      <li class="page-item mx-3">
+        <a class="page-link" th:href="@{${paging.queryString}(page=${paging.prevPage})}" th:classappend="${(paging.page==1)?'disabled':''}">Previous</a>
+      </li>
+      <li class="page-item mx-3">
+        <a class="page-link" th:href="@{${paging.queryString}(page=${paging.nextPage})}" th:classappend="${(!(paging.next))?'disabled':''}">Next</a>
+      </li>
+    </ul>
+  </nav>
+  <!--pagination end--------------->
+  <script th:inline="javascript">
+    const forms = document.forms.searchForm;
+    console.log(forms);
+    forms.searchDiv.onchange = (qualifiedName, value)=>{
+      console.log(forms.searchDiv.value);
+      forms.searchWord.setAttribute("required", value);
+    }
+    forms.dateType.onchange = (qualifiedName, value)=>{
+      forms.startDate.setAttribute("required", value);
+      forms.endDate.setAttribute("required", value);
+    }
+    forms.reset.onclick=()=>{
+      forms.searchWord.removeAttribute("required");
+      forms.startDate.removeAttribute("required");
+      forms.endDate.removeAttribute("required");
+    }
+
+  </script>
+</div>
+</html>

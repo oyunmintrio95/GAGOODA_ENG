@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/adminLayout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div layout:fragment="content">
+    <h2>환불 신청 목록</h2>
+    <form action="/refund/admin/list.do" method="get" id="searchForm" name="searchForm">
+        <div>
+            <label class="d-block">검색 키워드 :
+                <select name="searchDiv" id="searchDiv">
+                    <option value="" selected disabled>검색 분류 선택</option>
+                    <option value="order_id">주문번호</option>
+                    <option value="uname">주문자명</option>
+                    <option value="phone">주문자 전화번호</option>
+                </select>
+                <input type="text" id="searchWord" name="searchWord">
+            </label>
+            <label class="d-block">검색 일시 :
+                <select name="dateType" id="dateType">
+                    <option selected disabled>검색 일시 분류</option>
+                    <option value="reg_date">요청 일시</option>
+                    <option value="mod_date">상태 수정 일시</option>
+                </select>
+                <input type="date" id="startDate" name="startDate"> ~
+                <input type="date" id="endDate" name="endDate">
+            </label>
+            <div class="d-flex">
+                <span>진행 상태 :</span>
+                <label><input type="checkbox" name="rfDet" id="rf0" value="rf0" > 환불 요청 </label>
+                <label><input type="checkbox" name="rfDet" id="rf1" value="rf1" > 환불 요청 취소 </label>
+                <label><input type="checkbox" name="rfDet" id="rf2" value="rf2" > 환불 요청 확인 </label>
+                <label><input type="checkbox" name="rfDet" id="rf3" value="rf3" > 반품 수거 중 </label>
+                <label><input type="checkbox" name="rfDet" id="rf4" value="rf4" > 반품 완료 </label>
+                <label><input type="checkbox" name="rfDet" id="rf5" value="rf5" > 환불 대기 </label>
+                <label><input type="checkbox" name="rfDet" id="rf6" value="rf6" > 환불 보류 </label>
+                <label><input type="checkbox" name="rfDet" id="rf7" value="rf7" > 환불 완료 </label>
+                <label><input type="checkbox" name="rfDet" id="rf8" value="rf8" > 환불 불가 </label>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div>
+                <button type="submit" class="btn btn-outline-secondary">검색</button>
+                <button name="reset" type="reset" class="btn btn-outline-primary">초기화</button>
+            </div>
+            <a class="btn btn-outline-danger cancelAllBtn" onclick="cancelAll()" href="javascript:void(0)">직접 환불</a>
+        </div>
+    </form>
+    <h3>환불 신청 <span th:text="${refundCount}"></span></h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>작성자</th>
+            <th>주문 ID</th>
+            <th>상세 주문 ID</th>
+            <th>옵션 상품 ID</th>
+            <th>주문 가격</th>
+            <th>환불 요청 가격</th>
+            <th>환불 진행 상태</th>
+            <th>환불 신청일</th>
+            <th>최근 상태 변경일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:if="${refundCount >= 0}" th:each="refund : ${refundList}" >
+            <tr class="hrefRow" th:data-refund="${refund.refundId}" th:data-rfDet="${refund.rfDet}">
+                <td th:text="${refund.uname}"></td>
+                <td th:text="${refund.orderId}"></td>
+                <td th:text="${refund.orderDetailId}"></td>
+                <td th:text="${refund.orderDetailDto.optionCode}"></td>
+                <td th:text="${refund.orderDetailDto.price}"></td>
+                <td th:text="${refund.cancelAmount}"></td>
+                <td th:text="${refund.rfDetDto.detName}"></td>
+                <td th:text="${#calendars.format(refund.regDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#calendars.format(refund.modDate, 'yyyy-MM-dd')}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <th:block th:unless="${refundCount >= 0}"><div>해당 환불 내역이 존재하지 않습니다.</div></th:block>
+
+    <!--pagination-->
+    <div th:include="/pagination.html"></div>
+    <!--pagination end--------------->
+
+<script th:inline="javascript">
+    let hrefRows = document.querySelectorAll(".hrefRow");
+    hrefRows.forEach((row)=>{
+        row.addEventListener('click',()=>{
+            console.log(row)
+            let targetHref = "http://"+ document.location.host + "/refund/admin/" + row.dataset.refund +"/detail.do";
+            console.log(targetHref)
+            let refundId = row.dataset.refund;
+            let rfDet = row.dataset.rfdet;
+            console.log("refundData:", rfDet);
+            if(rfDet === "rf0" ){
+                let isOk = confirm("진행 상태가 '환불 요청 확인' 상태로 바뀝니다. 확인하시겠습니까?");
+                if(isOk){
+                    modifyRf(refundId);
+                    setTimeout(()=>{document.location.href =  targetHref}, 200);
+                }
+            }else{
+                document.location.href =  targetHref;
+            }
+        })
+    })
+    /* 비동기 rf 상태 수정 */
+    async function modifyRf(refundId){
+        let url = "http://"+document.location.host+"/refund/admin/"+refundId+"/modify.do"
+        let modifyForm = new FormData();
+        modifyForm.set("refundId", refundId);
+        modifyForm.set("rfDet", "rf2");
+        modifyForm.set("reply", "사랑합니다, 고객님! 지금 요청을 확인하였습니다. 빠른 시일 내에 처리 진행해드리도록 하겠습니다.")
+        const resp = await fetch(url, {method: "POST", body: modifyForm, redirect: "manual"})
+        console.log(resp)
+    }
+
+
+    const forms = document.forms.searchForm;
+    console.log(forms);
+    forms.searchDiv.onchange = (qualifiedName, value)=>{
+        console.log(forms.searchDiv.value);
+        forms.searchWord.setAttribute("required", value);
+        if(!forms.searchDiv.value){
+            forms.searchWord.removeAttribute("required");
+        }
+    }
+    forms.searchWord.onchange = (qualifiedName, value)=>{
+        forms.searchDiv.setAttribute("required", value);
+        if (!forms.searchWord.value){
+            forms.searchDiv.removeAttribute("required");
+        }
+    }
+    forms.dateType.onchange = (qualifiedName, value)=>{
+        forms.startDate.setAttribute("required", value);
+        forms.endDate.setAttribute("required", value);
+        if(!forms.dateType.value && !forms.startDate.value && !forms.endDate.value){
+            forms.startDate.removeAttribute("required");
+            forms.endDate.removeAttribute("required");
+        }
+    }
+    forms.startDate.onchange = (qualifiedName, value)=>{
+        forms.dateType.setAttribute("required", value);
+        forms.endDate.setAttribute("required", value);
+        if(!forms.startDate.value && !forms.startDate.value && !forms.endDate.value){
+            forms.dateType.removeAttribute("required");
+            forms.endDate.removeAttribute("required");
+        }
+    }
+    forms.endDate.onchange = (qualifiedName, value)=>{
+        forms.dateType.setAttribute("required", value);
+        forms.startDate.setAttribute("required", value);
+        if(!forms.endDate.value && !forms.startDate.value && !forms.endDate.value){
+            forms.dateType.removeAttribute("required");
+            forms.startDate.removeAttribute("required");
+        }
+    }
+
+    forms.reset.onclick=()=>{
+        // forms.searchWord.removeAttribute("required");
+        // forms.startDate.removeAttribute("required");
+        // forms.endDate.removeAttribute("required");
+        console.log(forms[0])
+        console.log(forms.length)
+        for (let i = 0; i < 5;i++){
+            forms[i].removeAttribute("required")
+        }
+    }
+
+    /* 전체 주문 환불 팝업 버튼 */
+    function cancelAll(){
+        let url = "http://"+window.location.host+"/refund/admin/payments/cancel.do"
+        window.open(url, "cancelAll", "width=450, height=600, resizable=no")
+    }
+
+</script>
+</div>
+</html>

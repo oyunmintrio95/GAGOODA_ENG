@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/adminLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 목록 조회</title>
+</head>
+<div layout:fragment="content">
+    <form action="/product/admin/product_list.do">
+        <fieldset>
+            <legend>상품 검색</legend>
+            <input type="text" name="searchWord" th:value="${searchWord}">
+            <button type="submit">검색</button>
+        </fieldset>
+        <fieldset>
+            <legend>정렬</legend>
+            <select name="orderField" id="orderField">
+                <option value="review_cnt" th:selected="${(paging.orderField.equals('review_cnt'))?true:false}">리뷰 개수 순</option>
+                <option value="order_cnt" th:selected="${(paging.orderField.equals('order_cnt'))?true:false}">주문 개수 순</option>
+                <option value="avg_rate" th:selected="${(paging.orderField.equals('avg_rate'))?true:false}">평점 순</option>
+                <option value="mod_date" th:selected="${(paging.orderField.equals('mod_date'))?true:false}">날짜 순</option>
+                <option value="product_code" th:selected="${(paging.orderField.equals('product_code'))?true:false}">아이디</option>
+                <option value="pname" th:selected="${(paging.orderField.equals('pname'))?true:false}">이름 순</option>
+            </select>
+            <select name="direct" id="direct">
+                <option value="ASC" th:selected="${(paging.direct.equals('ASC'))?true:false}">오름차순</option>
+                <option value="DESC" th:selected="${(paging.direct.equals('DESC'))?true:false}">내림차순</option>
+                </select>
+        </fieldset>
+        <fieldset id="categoryCheck">
+            <div>
+                <h3>대분류</h3>
+                <div>
+                    <th:block th:each="category:${levelOne}">
+                        <input type="checkbox" name="categoryId" th:id="${category.key}" th:value="${category.key}">
+                        <label th:for="${category.key}" th:text="${category.value}"></label>
+                    </th:block>
+                </div>
+            </div>
+            <div>
+                <h3>중분류</h3>
+                <div>
+                    <th:block th:each="category:${levelTwo}">
+                        <input type="checkbox" name="categoryId" th:id="${category.key}" th:value="${category.key}">
+                        <label th:for="${category.key}" th:text="${category.value}"></label>
+                    </th:block>
+                </div>
+            </div>
+            <div>
+                <h3>소분류</h3>
+                <div>
+                    <th:block th:each="category:${levelThree}">
+                        <input type="checkbox" name="categoryId" th:id="${category.key}" th:value="${category.key}">
+                        <label th:for="${category.key}" th:text="${category.value}"></label>
+                    </th:block>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset id="detCheckBox">
+            <legend>상품 상태</legend>
+            <th:block th:each="det:${detDict}">
+                <input type="checkbox" name="catDet" th:id="${det.key}" th:value="${det.key}">
+                <label th:for="${det.key}" th:text="${det.value}"></label>
+            </th:block>
+        </fieldset>
+        <button type="submit">찾기</button>
+    </form>
+    <div id="table">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>상품 코드</th>
+                <th>상품명</th>
+                <th>판매처</th>
+                <th>옵션</th>
+                <th>수량</th>
+                <th>공급가</th>
+                <th>판매가</th>
+                <th>상태</th>
+                <th>수정일</th>
+                <th>평점</th>
+                <th>주문수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="product, num : ${productList}" th:if="${!productList.isEmpty()}">
+                <tr>
+                    <td th:text="${num.count}"></td>
+                    <td th:text="${product.productCode}"></td>
+                    <td><a th:href="@{'/product/admin/{productCode}/modify.do'(productCode=${product.productCode})}"
+                           th:text="${product.pname}"></a></td>
+                    <td th:text="${product.place}"></td>
+                    <td>
+                        <label>
+                            <select th:id="${product.productCode}" class="form-control">
+                                <th:block th:each="option:${product.optionProductList}">
+                                    <option th:value="${option.stock}" th:text="${option.opname}"></option>
+                                </th:block>
+                            </select>
+                        </label>
+                    </td>
+                    <td th:text="${product.optionProductList[0].stock}" th:id="${product.productCode+'_stock'}"></td>
+                    <td th:text="${product.supplyPc}"></td>
+                    <td th:text="${product.salesPc}"></td>
+                    <td th:text="${detDict[product.PDet]}"></td>
+                    <td th:text="${#dates.format(product.modDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${product.avgRate}"></td>
+                    <td th:text="${product.orderCnt}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <p th:if="${productList.isEmpty()}" class="text-center">해당 조건을 충족하는 상품이 존재하지 않습니다.</p>
+    </div>
+    <th:block th:if="${!productList.isEmpty()}">
+        <!--페이지네이션-->
+        <th:block th:include="~{pagination}"></th:block>
+        <!--페이지네이션end-->
+    </th:block>
+
+
+    <script th:inline="javascript">
+        console.log("[[${paging.startPage}]]");
+        console.log("[[${paging.endPage}]]");
+        const table = document.getElementById("table");
+        const selects = table.querySelectorAll("select");
+        selects.forEach(select => {
+            select.onclick = () => getValue(select.id);
+        });
+
+        function getValue(id) {
+            const select = document.getElementById(id);
+            const value = document.getElementById(id + "_stock");
+            value.innerText = select.value;
+        }
+
+        const catDetList = [[${catDetList}]];
+        const checkField = document.getElementById("detCheckBox");
+        const checkboxes = checkField.querySelectorAll("input[type=checkbox]");
+        if (catDetList != null) {
+            catDetList.forEach(value => {
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.value === value) {
+                        checkbox.setAttribute("checked", "true");
+                    }
+                });
+            });
+        }
+
+        const cateCheckField = document.getElementById("categoryCheck");
+        const cateCheckBoxes = cateCheckField.querySelectorAll("input[type=checkbox]");
+        const categoryIdList = [[${categoryIdList}]];
+
+        if (categoryIdList != null) {
+            categoryIdList.forEach(value => {
+                cateCheckBoxes.forEach(checkbox => {
+                    if (checkbox.value === value) {
+                        checkbox.setAttribute("checked", "true");
+                    }
+                });
+            });
+        }
+    </script>
+
+</div>
+</html>

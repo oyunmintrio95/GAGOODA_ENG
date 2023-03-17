@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/mypageLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div layout:fragment="myPageContent">
+    <h2>상품 리뷰
+        <th:block th:text="${count}"></th:block>
+        건
+    </h2>
+    <hr style="margin-top: 0; background : #B68C68; height: 5px">
+    <table class="table" style="table-layout: fixed">
+        <thead>
+        <th scope="col">리뷰 ID</th>
+        <th scope="col">상품명</th>
+        <th scope="col">평점</th>
+        <th scope="col">내용</th>
+        <th scope="col">작성일</th>
+        <th scope="col"></th>
+        </thead>
+        <tbody>
+        <tr th:each="review:${reviewList}">
+            <td th:text="${review.reviewId}"></td>
+            <td style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+                ><a class="text-decoration-none text-black" th:href="@{'/product/{productCode}/detail.do'(productCode=${review.productCode})}" th:text="${review.optionProduct.opname}"></a></td>
+            <td th:text="${review.rate}"></td>
+            <td style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+                th:text="${review.content}"></td>
+            <td th:text="${#dates.format(review.regDate,'yyyy-MM-dd HH:mm')}"></td>
+            <td class="my-5">
+                <a class="btn border text-decoration-none" style="background-color: #FFFAF5; color: #b68c68;" th:href="@{'/product/{productCode}/detail.do'(productCode=${review.productCode})}">이동</a>
+<!--                <button type="submit" th:onclick=|update(${review.reviewId})| class="btn border"-->
+<!--                        style="background-color: #FFFAF5; color: #b68c68">수정-->
+<!--                </button>-->
+<!--                <button type="submit" th:onclick=|remove(${review.reviewId})| class="btn border"-->
+<!--                        style="background-color: #FFFAF5; color: #b68c68">삭제-->
+<!--                </button>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="d-flex" style="justify-content: center">
+        <th:block th:if="${reviewList == null or reviewList.isEmpty()}">
+            <p th:text="'등록된 리뷰가 없습니다.'"></p>
+        </th:block>
+    </div>
+    <script th:inline="javascript">
+        function update(reviewId) {
+            let update = confirm("해당 리뷰를 수정하시겠습니까 ?");
+            if (update == true) {
+                location.href = "/review/user_yes/modify.do?reviewId=" + reviewId;
+            }
+        }
+        function remove(reviewId) {
+            let remove = confirm("해당 리뷰를 삭제하시겠습니까 ?");
+            if (remove == true) {
+                location.href = "/review/user_yes/delete.do?reviewId=" + reviewId;
+            }
+        }
+    </script>
+</div>
+</html>

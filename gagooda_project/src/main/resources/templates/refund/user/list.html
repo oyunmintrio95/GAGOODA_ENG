@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/mypageLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        button[type=submit]:hover{
+            background-color: #fff;
+            text-decoration-color: #1a1e21;
+        }
+    </style>
+</head>
+<div layout:fragment="myPageContent">
+<h2>유저 환불 목록</h2>
+<span class="currentPeriod" th:text="${param.period}" style="display: none"></span>
+<div class="d-flex justify-content-between my-3">
+    <ul class="nav ">
+        <!--공통 코드별(진행:rf0,rf2,rf3,rf4,rf5,rf6 / 완료:rf1,rf7,rf8) 선택 조회-->
+        <li class="nav-item "><a class="nav-link afterCode btn" href="javascript:void(0)"  data-val="all" style="text-decoration: none; color:#B68C68;">전체 환불 내역</a></li>
+        <li class="nav-item"><a class="nav-link afterCode" href="javascript:void(0)" data-val="notEnd" style="text-decoration: none; color:#B68C68;">환불 진행 내역</a></li>
+        <li class="nav-item"><a class="nav-link afterCode" href="javascript:void(0)" data-val="end" style="text-decoration: none; color:#B68C68;">환불 완료 내역</a></li>
+        <!--공통 코드별(진행:rf0,rf2,rf3,rf4,rf5,rf6 / 완료:rf1,rf7,rf8) 선택 조회 end-->
+        <li class="nav-link disabled">( 총 <th:block th:text="${userRefundCount}"></th:block> 건)</li>
+    </ul>
+    <!-- 기간 검색 조회-->
+    <form  th:action="@{ '' }" method="get" class="d-flex align-self-end" style="height: 40px;">
+        <input class="form-control" type="date" name="startDate" id="startDate" required>
+        <span class="mx-2" style="line-height: 40px;"><i class="bi bi-dash"></i></span>
+        <input class="form-control" type="date" name="endDate" id="endDate" required>
+        <button class="btn text-white mx-1 ms-2" type="submit" style="background-color: #B68C68;"><i class="bi bi-search"></i></button>
+    </form>
+    <!-- 기간 검색 조회 end-->
+</div>
+
+
+<div class="nav-tabs" >
+    <ul class="nav">
+        <!-- 기간 선택 조회-->
+        <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="7" style="text-decoration: none; color:#B68C68;">7일</a></li>
+        <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="15" style="text-decoration: none; color:#B68C68;">15일</a></li>
+        <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="30" style="text-decoration: none; color:#B68C68;">1개월</a></li>
+        <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="90" style="text-decoration: none; color:#B68C68;">3개월</a></li>
+        <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="365" style="text-decoration: none; color:#B68C68;">1년</a></li>
+        <!-- 기간 선택 조회 end-->
+    </ul>
+</div>
+    <hr style="margin-top: 0; background : #b68c68; height: 5px">
+
+<table class="table table-hover">
+    <th:block th:if="${refundMsg != null}">
+        <span id="msg" th:data-msg="${refundMsg}"></span>
+        <div class="alert alert-primary" role="alert" th:text="${refundMsg}"></div>
+    </th:block>
+    <thead>
+        <tr>
+            <th class="text-center" scope="col">환불 요청 날짜</th>
+            <th class="text-center" scope="col">주문번호</th>
+            <th class="text-center" scope="col">상품명</th>
+            <th class="text-center" scope="col">환불 금액</th>
+            <th class="text-center" scope="col">처리 현황</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="refund:${refundList}" class="hrefRow" th:data-refund="${refund.refundId}" style="cursor: pointer">
+            <td class="text-center" scope="row" style="vertical-align: middle;" th:text="${#calendars.format(refund.regDate,'yyyy-MM-dd')}"></td>
+            <td class="text-center" style="vertical-align: middle;" th:text="${refund.orderId}"></td>
+            <td >
+                <th:block th:if="${!refund.orderDetailDto.imageList.isEmpty() && refund.orderDetailDto.imageList != null}">
+                    <img th:src="@{'/img/product/{file}' (file=${refund.orderDetailDto.imageList[0].imgPath})}" style="width: 50px; height:50px; object-fit: cover; vertical-align: middle;">
+                </th:block>
+                <span style="vertical-align: middle;" th:text="${#strings.abbreviate(refund.orderDetailDto.optionName, 15)}"></span>
+            </td>
+            <td class="text-center" style="vertical-align: middle;" th:text="${refund.cancelAmount}"></td>
+            <td class="text-center" style="vertical-align: middle;  color: #B68C68; border-color:#eeeeee;" th:text="${refund.rfDetDto.detName}"></td>
+        </tr>
+    </tbody>
+</table>
+<th:block th:if="${userRefundCount == 0}">
+    <h3>환불 내역이 없습니다.</h3>
+</th:block>
+
+    <!--pagination-->
+    <div th:include="/pagination.html"></div>
+    <!--pagination end--------------->
+
+<script th:inline="javascript">
+    let hrefRows = document.querySelectorAll(".hrefRow");
+    hrefRows.forEach((row)=>{
+        row.addEventListener('click',()=>{
+            console.log(row)
+            let targetHref = "http://"+ document.location.host + "/refund/user_yes/mypage/"+ row.dataset.refund+"/detail.do";
+            console.log(targetHref)
+            document.location.href =  targetHref;
+        })
+    })
+    const afterParam = document.querySelectorAll(".afterParam");
+    let period = document.querySelector(".currentPeriod").innerText;
+    let url = document.location.href;
+    afterParam.forEach(param=>{
+        let period = "period="+[[${param.period}]];
+        let value = [[${param.period}]]
+        if (param.dataset.val == value){
+            console.log(period)
+            param.classList.add("active");
+        }else{
+        }
+    });
+    afterParam.forEach((param)=>{
+        param.addEventListener("click", ()=>{
+            if (url.includes("?")){
+                if(url.includes("startDate") && url.includes("endDate")){
+                    url = url.replace("startDate="+[[${param.startDate}]]+"&endDate="+[[${param.endDate}]],"");
+                }
+                if (url.includes("period")){
+                    document.location.href = url.replace("period="+[[${param.period}]], "period="+param.dataset.val);
+                }else{
+                    document.location.href = url + "&period="+param.dataset.val;
+                }
+            }else{
+                document.location.href = document.location.href + "?period=" + param.dataset.val;
+            }
+        })
+    })
+
+    let afterCode = document.querySelectorAll(".afterCode");
+    afterCode.forEach(code=>{
+        code.addEventListener("click",()=>{
+            if (url.includes("?")){
+                if (url.includes("detCode")){
+                    document.location.href = url.replace("detCode="+[[${param.detCode}]], "detCode="+code.dataset.val);
+                }else{
+                    document.location.href = url + "&detCode="+code.dataset.val;
+                }
+            }else{
+                document.location.href = document.location.href + "?detCode=" + code.dataset.val;
+            }
+        })
+        if (code.classList.contains("btn")){
+            code.removeAttribute("btn")
+            code.style.color = "B68C68";
+            code.style.removeProperty("background-color");
+        }
+        if ([[${param.detCode}]] && code.dataset.val === [[${param.detCode}]].toString()){
+            code.classList.add("btn");
+            code.style.color = "#ffffff";
+            code.style.backgroundColor = "#B68C68";
+        }
+    })
+</script>
+</div>
+</html>

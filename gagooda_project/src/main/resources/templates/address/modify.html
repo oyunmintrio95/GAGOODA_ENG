@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/mypageLayout}">
+<head>
+  <meta charset="UTF-8">
+  <title>사용자 배송지 수정</title>
+</head>
+<div layout:fragment="myPageContent">
+<h2 class="text-center my-4">사용자 배송지 수정</h2>
+  <hr style="margin-bottom: 1; background : #b68c68; height: 5px">
+
+  <form action="/address/user_yes/mypage/modify.do" method="post"  enctype="multipart/form-data" class="container mt-5" style="width: 40%; margin-bottom: 200px" name="addressModifyForm">
+  <div class="my-3">
+    <label for="aname" class="form-label">주소지 이름</label>
+    <input type="text" name="aname" class="form-control form-control-lg" id="aname" th:value="${address.getAname}" required>
+  </div>
+    <label for="postCode" class="form-label">우편번호</label>
+    <div class="my-1 input-group">
+      <input type="button" style="background-color: #FFFAF5; color: #B68C68" onclick="DaumPostcode()" value="우편번호 찾기" class="d_btn input-group-text">
+      <input type="text" name="postCode" class="form-control form-control-lg" id="postCode" th:value="${address.getPostCode}" required th:readonly="true">
+  </div>
+  <div  class="my-3">
+    <label for="address" class="form-label">주소</label>
+    <input type="text" name="address" class="form-control form-control-lg" id="address" th:value="${address.getAddress}" required th:readonly="true">
+  </div>
+  <div class="my-3">
+    <label for="addressDetail" class="form-label">상세주소</label>
+    <input type="text" name="addressDetail" class="form-control form-control-lg" id="addressDetail" th:value="${address.getAddressDetail}" required>
+  </div>
+  <div class="my-3">
+    <label for="receiverName" class="form-label">수령인 이름</label>
+    <input type="text" name="receiverName" class="form-control form-control-lg" id="receiverName" th:value="${address.getReceiverName}" required>
+  </div>
+  <div class="my-3">
+    <label for="receiverPhone" class="form-label">수령인 전화번호</label>
+    <input type="text" id="receiverPhone" class="form-control form-control-lg" name="receiverPhone" th:value="${address.getReceiverPhone}" required>
+  </div>
+    <span id="phoneCheckMsg"></span>
+
+  <fieldset class="my-3">
+    <legend>기본 배송지 설정 여부</legend>
+    <div>
+      <label for="homeTrue">맞음</label>
+      <input type="radio" name="home" id="homeTrue" value="1" th:checked="${address.home==true}">
+    </div>
+    <div>
+      <label for="homeFalse">아님</label>
+      <input type="radio" name="home" id="homeFalse" value="0" th:checked="${address.home==false}">
+    </div>
+  </fieldset>
+  <fieldset class="my-3">
+    <legend>엘레베이터 유무 여부</legend>
+    <div>
+      <label for="elevatorTrue">있음</label>
+      <input type="radio" name="elevator" id="elevatorTrue" value="1" th:checked="${address.elevator==true}">
+    </div>
+    <div>
+      <label for="elevatorFalse">없음</label>
+      <input type="radio" name="elevator" id="elevatorFalse" value="0"  th:checked="${address.elevator==false}">
+    </div>
+  </fieldset>
+
+  <input type="hidden" name="addressId" id="addressId" th:value="${address.addressId}">
+  <input type="hidden" name="userId" th:value="${address.userId}">
+  <div>
+    <button type="submit" class="input-group-text" style="background-color: #FFFAF5; color: #B68C68; display: inline-block" th:text="저장하기"></button>
+    <button type="button" class="text-white input-group-text" th:href="@{'delete.do' (address_id=${address.addressId}) }"
+            th:text="삭제하기" style="background-color: #B68C68; display: inline-block;" th:onclick="deleteCheck()"></button>
+  </div>
+</form>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script>
+    const addressModifyForm = document.forms["addressModifyForm"];
+    function DaumPostcode() {
+
+      new daum.Postcode({
+        oncomplete: function(data) {
+          // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+          // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+          // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+          var addr = ''; // 주소 변수
+          var extraAddr = ''; // 참고항목 변수
+
+          //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+          if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+            addr = data.roadAddress;
+          } else { // 사용자가 지번 주소를 선택했을 경우(J)
+            addr = data.jibunAddress;
+          }
+
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if(data.userSelectedType === 'R'){
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+              extraAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if(extraAddr !== ''){
+              extraAddr = ' (' + extraAddr + ')';
+            }
+            // 조합된 참고항목을 해당 필드에 넣는다.
+            document.getElementById("addressDetail").value = extraAddr;
+
+          } else {
+            document.getElementById("addressDetail").value = '';
+          }
+
+          // 우편번호와 주소 정보를 해당 필드에 넣는다.
+          document.getElementById('postCode').value = data.zonecode;
+          document.getElementById("address").value = addr;
+          // 커서를 상세주소 필드로 이동한다.
+          document.getElementById("addressDetail").focus();
+        }
+      }).open();
+    }
+    function deleteCheck() {
+
+      let result = confirm("정말로 삭제하시겠습니까?");
+      if (result==true) {
+        location.href = "delete.do?address_id="+document.getElementById("addressId").value;
+      } else {
+      }
+
+    }
+    const phoneInput = addressModifyForm["receiverPhone"];
+    phoneInput.addEventListener("change",(e)=> {
+      phoneCheck()
+    });
+
+    function phoneCheck() {
+      const phoneCheckMsg = document.getElementById("phoneCheckMsg");
+      const phone = addressModifyForm["receiverPhone"];
+      if (phone.value === "") {
+        phoneCheckMsg.innerText = "";
+      } else if (isNaN(phone.value)) {
+        phoneCheckMsg.innerText = "전화번호를 정확히 입력해주세요.";
+        phoneCheckMsg.setAttribute("style","color: #e53b3b;");
+      }else if (phone.value.length !== 11) {
+        phoneCheckMsg.innerText = "전화번호 11자리를 정확히 입력해 주세요.";
+        phoneCheckMsg.setAttribute("style","color: #e53b3b;");
+      } else if (phone.value.slice(0,3) !== '010' ) {
+        phoneCheckMsg.innerText = "전화번호 앞 3자리는 010 이어야 합니다."
+        phoneCheckMsg.setAttribute("style","color: #e53b3b;");
+      } else {
+        phoneCheckMsg.innerText = "올바른 전화번호 입니다.";
+        phoneCheckMsg.setAttribute("style","color: #0f9105;");
+        return true;
+      }
+      return false;
+    }
+    addressModifyForm.onsubmit=(e)=>{
+      if (!phoneCheck(e)) {
+        e.preventDefault();
+      }
+    }
+
+  </script>
+</div>
+</html>

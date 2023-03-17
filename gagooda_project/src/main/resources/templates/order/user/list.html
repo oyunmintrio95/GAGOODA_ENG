@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/mypageLayout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>주문 목록</title>
+</head>
+<div layout:fragment="myPageContent">
+    <h1 class="mb-4">주문 목록</h1>
+    <!--기간별 조회-->
+    <ul class="nav nav-tabs" id="searchDate">
+        <li class="nav-item">
+            <a class="dayNum nav-link" style="text-decoration: none; color:#B68C68;" th:classappend="${(dates==7)?'active':''}" th:href="@{ '' (dates=7) }">7일</a>
+        </li>
+        <li class="nav-item">
+            <a class="dayNum nav-link" style="text-decoration: none; color:#B68C68;" th:classappend="${(dates==15)?'active':''}"  th:href="@{ '' (dates=15) }">15일</a>
+        </li>
+        <li class="nav-item">
+            <a class="dayNum nav-link" style="text-decoration: none; color:#B68C68;" th:classappend="${(dates==30)?'active':''}" th:href="@{ '' (dates=30) }" >1개월</a>
+        </li>
+        <li class="nav-item">
+            <a class="dayNum nav-link" style="text-decoration: none; color:#B68C68;" th:classappend="${(dates==90)?'active':''}" th:href="@{ '' (dates=90) }">3개월</a>
+        </li>
+        <li class="nav-item">
+            <a class="dayNum nav-link" style="text-decoration: none; color:#B68C68;" th:classappend="${(dates==365)?'active':''}" th:href="@{ '' (dates=365) }" >1년</a>
+        </li>
+    </ul>
+    <!--기간별 조회 end--------------->
+    <hr style="margin-top: 0; background : #b68c68; height: 5px">
+    <!--주문목록 table-->
+    <table class="table table-hover">
+        <thead>
+            <th scope="col">주문번호</th>
+            <th scope="col">주문날짜</th>
+            <th scope="col">상품정보</th>
+            <th scope="col">주문가격</th>
+            <th scope="col">주문상태</th>
+            <th scope="col">주문 관리</th>
+        </thead>
+        <tbody>
+            <tr th:each="order:${orderList}">
+                <!--=====================FIX:style cursor : pointer row 전체에 생김=============================-->
+                <td >
+                    <a th:text="${order.orderId}" style="cursor:pointer; text-decoration: none; color:#B68C68; " th:href="@{'/order/user_yes/mypage/{orderId}/detail.do'(orderId=${order.orderId})}"></a>
+                </td>
+                <td th:text="${#dates.format(order.regDate, 'yyyy-MM-dd')}"></td>
+                <td>
+                    <img th:src="@{'/img/product/{file}'(file=${order.imgPath})}"
+                         style="width: 50px; height:50px; object-fit: cover;">
+                    <th:block th:if="${order.orderDetailList != null}">
+                         <span th:text="'상품 ' +${order.orderDetailList.size()} +'건'"></span>
+                    </th:block>
+                </td>
+                <td th:text="${order.totalPrice}+'원'"></td>
+                <td th:text="${oCodeList[order.oDet.substring(1)].detName}"></td>
+                <td>
+                    <!--배송 완료이고, enddate가 있으면 조건 check => today's date - enddate >30 일 때, disable-->
+                    <button class="btn text-white" type="button" style="background-color: #B68C68;" th:onclick="location.href=[[@{'/delivery/user_yes/mypage/{orderId}/detail.do'(orderId=${order.orderId})}]]">배송 조회</button>
+                    <button class="btn" id="cancelOrder" type="button" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;" th:onclick="cancelRecheck([[${order.orderId}]])"
+                            th:classappend="${(#strings.equals(order.oDet,'o4')||(#strings.equals(order.oDet,'o5')))?'disabled':''}">주문 취소</button>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+    <!--주문 목록 table end----------------->
+    <!--pagination-->
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation ">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;"  th:href="@{${paging.queryString}(page=${paging.prevPage})}" th:classappend="${(paging.page==1)?'disabled':''}">Previous</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;" th:href="@{${paging.queryString}(page=${paging.nextPage})}" th:classappend="${(!(paging.next))?'disabled':''}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!--pagination end--------------->
+    <script th:inline="javascript">
+
+
+       function cancelRecheck(orderId){
+           if(confirm("주문을 정말로 취소하시겠습니까?")) {
+               location.href = '/order/user_yes/mypage/' + orderId + '/modify.do'
+           }
+       }
+       const disabled = document.querySelectorAll(".disabled");
+       for(let i=0; i<disabled.length;i++){
+           disabled[i].style.color = 'lightgrey'
+       }
+
+
+    </script>
+</div>
+</html>

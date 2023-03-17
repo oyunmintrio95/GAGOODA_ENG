@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:onsubmit="event.preventDefault(); modifyReply(this);"
+      name="replyModifyForm" enctype="multipart/form-data" action="/reply/modify.do" method="post">
+  <input type="hidden" name="commId" th:value="${reply.commId}">
+  <input type="hidden" name="fkReplyId" th:value="${reply.fkReplyId}">
+  <input type="hidden" name="replyId" th:value="${reply.replyId}">
+  <input type="hidden" name="userId" th:value="${reply.userId}">
+  <div>
+        <p class="fw-bold" th:text="${reply.user.nickname}" style="color: #5c636a;">
+        </p>
+  </div>
+  <div class="col-12">
+    <input type="text" class="form-control" name="content" id="exampleFormControlInput1" th:value="${reply.content}" placeholder="칭찬과 격려는 작성자에게 큰 힘이 됩니다:)">
+  </div>
+  <div class="d-flex justify-content-end mt-2">
+    <button type="reset" class="btn border" style="background-color: #FFFAF5; color: #B68C68;">초기화</button>
+    <button type="submit" class="btn border ms-2" style="background-color: #FFFAF5; color: #B68C68;">수정</button>
+  </div>
+</form>
+</html>

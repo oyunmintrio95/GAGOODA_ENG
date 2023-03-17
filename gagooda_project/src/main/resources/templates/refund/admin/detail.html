@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/adminLayout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div layout:fragment="content">
+<h3>환불 상세 내역</h3>
+    <div>
+        <th:block th:if="${payment != null}">
+            <h4>결제/주문 내역</h4>
+            <table class="table">
+                <thead>
+                <tr class="text-center">
+                    <th colspan="2">결제 내역</th>
+                    <th colspan="2">주문 내역</th>
+                </tr>
+                </thead>
+                <tr>
+                    <th class="col-2">결제 날짜</th>
+                    <td class="col-4" th:text="${#dates.format(payment.paidAt, 'yyyy-MM-dd HH:mm')}"></td>
+                    <th class="col-2">주문 날짜</th>
+                    <td class="col-4" th:text="${#dates.format(order.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+                <tr>
+                    <th class="col-2">결제 주문번호</th>
+                    <td class="col-4" id="orderId" th:text="${payment.merchantUid}"></td>
+                    <th class="col-2">주문번호</th>
+                    <td class="col-4" th:text="${order.orderId}"></td>
+                </tr>
+                <tr>
+                    <th class="col-2" >총 결제 금액</th>
+                    <td class="col-4" th:text="${payment.amount}"></td>
+                    <th class="col-2">총 구매 금액</th>
+                    <td class="col-4" th:text="${order.totalPrice}"></td>
+
+                </tr>
+                <tr>
+                    <th class="col-2">결제자</th>
+                    <td class="col-4" th:text="${payment.buyerName}"></td>
+                    <th class="col-2">주문자</th>
+                    <td class="col-4" th:text="${order.userName}"></td>
+                </tr>
+                <tr>
+                    <th class="col-2">결제자 전화번호</th>
+                    <td class="col-4" th:text="${payment.buyerTel}"></td>
+                    <th class="col-2">주문자 전화번호</th>
+                    <td class="col-4" th:text="${order.userPhone}"></td>
+                </tr>
+                <tr>
+                    <th class="col-2">결제자 이메일</th>
+                    <td class="col-4" th:text="${payment.buyerEmail}"></td>
+                    <th class="col-2">주문자 이메일</th>
+                    <td class="col-4" th:text="${order.userEmail}"></td>
+                </tr>
+                <tr>
+                    <th class="col-2">결제 상태</th>
+                    <td class="col-4 paymentStatus" th:data-status="${payment.status}"></td>
+                    <th class="col-2">주문 상품</th>
+                    <td class="col-4">
+                        <th:block th:if="${!order.orderDetailList.isEmpty() && order.orderDetailList != null}">
+                            <span th:text="${order.orderDetailList[0].optionName + ' 등'}"></span>
+                            <span th:text="${order.orderDetailList.size() + '건'}"></span>
+                        </th:block>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-2">결제 수단</th>
+                    <td colspan="3" class="col-4" > <span class="payMethod" th:text="${payment.payMethod}"></span> <span th:if="${payment.payMethod.equals('point')}">(결제 수단이 point인 경우, 부분 환불이 불가능합니다.)</span></td>
+                </tr>
+                <tr>
+                    <th class="col-2">결제 카드사</th>
+                    <td class="col-4" th:text="${payment.cardName}"></td>
+                </tr>
+            </table>
+
+            <div>
+                <div th:if="${payment.cancelHistory != null}" th:each="cancelHis: ${payment.cancelHistory}">
+                    <h4>결제 취소 정보</h4>
+                    <table class="table">
+                        <tr>
+                            <th class="col-2">결제 취소일</th>
+                            <td class="col-4" th:text="${#dates.format(cancelHis.cancelledAt, 'yyyy-MM-dd') }"></td>
+                        </tr>
+                        <tr>
+                            <th class="col-2">결제 취소 금액 </th>
+                            <td class="col-4" th:text="${cancelHis.amount}"></td>
+                        </tr>
+                        <tr>
+                            <th class="col-2">결제 취소 사유</th>
+                            <td class="col-4" th:text="${cancelHis.reason}"></td>
+                        </tr>
+                        <tr>
+                            <th class="col-2">결제 취소 영수증</th>
+                            <td class="col-4"><span class="btn btn-outline-secondary receiptUrl" th:data-receipt="${cancelHis.receiptUrl}">취소 영수증</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </th:block>
+
+    </div>
+
+    <h4>환불 요청 상품</h4>
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th colspan="2">환불 요청 상품</th>
+                <th colspan="2">수령인 정보</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="col-2">상품명</th>
+                <td class="col-4" th:text="${orderDetail.optionName}"></td>
+                <th class="col-2">수령인</th>
+                <td class="4" th:text="${refund.receiverName}"></td>
+            </tr>
+            <tr>
+                <th class="col-2">환불 요청 금액</th>
+                <td class="col-4" >
+                    <span id="cancelAmount" th:text="${refund.cancelAmount}"></span>( <span th:text="${'총 주문 금액: '+ order.totalPrice}"></span> )
+                </td>
+                <th class="col-2">수령인 연락처</th>
+                <td class="col-4" th:text="${refund.receiverPhone}"></td>
+            </tr>
+            <tr>
+                <th class="col-2">환불 요청 분류</th>
+                <td class="col-4" th:text="${refund.rfrDetDto.detName}"></td>
+                <th class="col-2">수령인 주소</th>
+                <td class="col-4">
+                    <div>(<span th:text="${refund.postCode}"></span>) <span th:text="${refund.address}"></span></div>
+                    <div th:text="${refund.addressDetail}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th class="col-2">환불 요청 사유</th>
+                <td class="col-4" th:text="${refund.reason}"></td>
+                <th class="col-2">엘리베이터 유무</th>
+                <td class="col-4">
+                    <div th:if="${refund.elevator == 1}">O</div>
+                    <div th:unless="${refund.elevator == 1}">X</div>
+                </td>
+            </tr>
+            <tr>
+                <th class="col-2">첨부 이미지</th>
+                <td class="col-4">
+                    <th:block th:if="${!refund.imageList.isEmpty() && refund.imageList != null}" th:each="img:${refund.imageList}">
+                        <img th:src="@{'/img/refund/{imgPath}'(imgPath = ${img.imgPath})}" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+                    </th:block>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>환불 상태 변경</h4>
+    <div class="d-flex">
+        <div>현재 환불 진행 상태: </div>
+        <div id="detName" class="ms-2" th:text="${refund.rfDetDto.detName}"></div>
+    </div>
+    <form name="modify" th:action="@{'/refund/admin/{refundId}/modify.do' (refundId=${refund.refundId})}" method="POST" onsubmit="return (submitRefund())">
+        <div>
+            <label class="form-label" for="rfDet">상태 변경</label>
+            <select class="form-select-sm" name="rfDet" id="rfDet" required th:disabled="${refund.rfDet.equals('rf7') || refund.rfDet.equals('rf1')}">
+                <option value="" selected disabled>변경할 상태를 선택하세요.</option>
+                <th:block th:each="rfCode:${rfCodeList}">
+                    <option class="rfDet" th:value="${rfCode.detCode}" th:text="${rfCode.detName}" th:data-rfNum="${rfCode.detCode.substring(2)}"></option>
+                </th:block>
+            </select>
+            <div>
+                <button class="btn btn-outline-secondary resetRfDet" type="button" onclick="resetRfDet()">이전 상태 사용</button>
+                <button id="cancelBtn" class="btn btn-outline-primary d-none" type="button" onclick="cancelPayments()">결제 취소 진행</button>
+            </div>
+        </div>
+        <div>
+            <label class="form-label d-block" for="reply">환불 요청 답변</label>
+            <div th:text="'이전 답변: '+${refund.reply}"></div>
+            <textarea class="form-text form-control-sm" required name="reply" id="reply" cols="70" rows="10" style="resize: none"></textarea>
+        </div>
+        <button class="btn btn-outline-primary refundSubmit" type="submit" >등록</button>
+    </form>
+
+<!--    <th:block th:if="${refund.rfDet.equals")}"-->
+<script th:inline="javascript">
+    /* rfDet 지난 상태 막기 */
+    let rfName = document.querySelectorAll(".rfDet");
+    let rfDet = document.querySelector("#rfDet");
+    let currentRfDet = [[${refund.rfDet}]];
+    console.log(currentRfDet)
+    rfName.forEach(element =>{
+        console.log(element.dataset.rfnum)
+        console.log(currentRfDet.slice(2))
+        if(element.dataset.rfnum < currentRfDet.slice(2)){
+            element.disabled = true;
+        }
+    })
+    if(currentRfDet.toString() === "rf7" || currentRfDet.toString() === "rf1"){
+        let submitBtn = document.querySelector(".refundSubmit");
+        submitBtn.disabled = true;
+    }
+
+    /* rfDet rf4, rf5, rf6 일 때만 결제 취소 버튼이 등장 --> 아직 submit 되지 않은 상태이기 때문에 여기서 변환해주지는 말자. */
+    // rfDet.addEventListener("change",()=>{
+    //     let display = document.getElementById("cancelBtn");
+    //     if(rfDet.value.includes("4") || rfDet.value.includes("5") || rfDet.value.includes("6")){
+    //         console.log("remove")
+    //         display.classList.remove("d-none");
+    //     }else{
+    //         console.log("add")
+    //         display.classList.add("d-none");
+    //     }
+    // })
+
+    /* 현재 주문 상태가 rf4, rf5, rf6 일 때만 결제 취소 버튼이 등장 */
+    if (currentRfDet.toString() === "rf4" || currentRfDet.toString() === "rf5" || currentRfDet.toString() === "rf6"){
+        let cancelBtn = document.getElementById("cancelBtn");
+        cancelBtn.classList.remove("d-none");
+    }
+
+
+    /* 결제 상태 한글로 변환 */
+    let paymentStatus = document.querySelector(".paymentStatus");
+    if (paymentStatus){
+        let statusName = paymentStatus.dataset.status;
+        if(statusName === "cancelled"){
+            paymentStatus.innerText = "결제 취소";
+        }else if(statusName === "paid"){
+            paymentStatus.innerText = "결제 완료";
+        }else if(statusName === "failed"){
+            paymentStatus.innerText = "결제 실패";
+        }else if(statusName === "ready"){
+            paymentStatus.innerText = "미결제";
+        }
+    }
+
+
+    const cancelBtn = document.querySelector("#cancelBtn");
+
+    let orderId = document.getElementById("orderId").innerText;
+    let cancelAmount = document.getElementById("cancelAmount").innerText;
+    let detName = document.getElementById("detName").innerText;
+
+    async function cancelPayments(){ // 결제 취소 AJAX
+        let isOk = confirm(`${[[${refund.cancelAmount}]]}원(50원) 환불(결제 취소)를 진행하시겠습니까?\n한 번 결제 취소를 진행할 시, 요청한 환불 금액이 고객에게 환불되며, '환불 완료' 상태가 되어 이후 상태 변경을 진행할 수 없습니다.`)
+        let reply;
+        if(isOk){
+            reply = prompt("답변을 작성하시겠습니까? 답변을 작성하지 않을 시 기본 저장되어 있는 답글이 보내집니다.",
+                `${new Intl.DateTimeFormat('kr').format(new Date())} 기준 환불이 완료되었습니다. 계좌 확인 후 3일 내에 결제 취소가 확인되지 않는다면 고객센터로 문의 주시기 바랍니다. 감사합니다.`)
+            if(reply != null){
+                const forms = document.forms.cancel; // POST 요청을 보낼 form
+                const formData = new FormData(forms); // fetch body에 담기 위해 new FormData 에 넣어준다.
+                formData.set("orderId", orderId);
+                formData.set("cancelAmount", "50");
+                formData.set("reason", detName);
+                let url = "/refund/admin/payments/cancel.do"; // 취소 요청을 보낼 POST url
+                const resp = await fetch(url,{method: "POST", body: formData}) // AJAX 시도
+                console.log("resp: "+ resp)
+                // console.log(resp.body)
+                // console.log(await resp.json())
+                if(resp.status === 200){
+                    const respJson = await resp.json(); // 비동기 통신으로 반환한 JSON 값, 취소된 객체의 정보를 담고 있음.
+                    console.log("respJson: "+respJson)
+                    console.log(respJson.message);
+                    let payMethod = document.querySelector(".payMethod");
+                    if(payMethod.innerText === "point"){ // 결제 수단이 "point"(간편결제:카카오페이,네이버페이 등) 이라면
+                        alert("간편 결제의 경우 부분 환불이 불가하여 전체 환불로 진행되어야 합니다. \n " +
+                            "상태를 '환불 불가'로 변경 후 전화 상담을 통해 환불 리스트 페이지의 환불 버튼을 이용하기 바랍니다.")
+                    }else{
+                        if (respJson.code > 0 || respJson.code < 0){ // 결제 취소에 실패했을 경우
+                            alert (respJson.message);
+                        }else if(respJson.code === 0){  // 결제 취소에 성공했을 경우
+                            let totalPrice = [[${refund.orderDto.totalPrice}]]
+                            let cancelAmount = [[${refund.cancelAmount}]]
+                            let refundId = [[${refund.refundId}]]
+                            alert(totalPrice +" 중 "+ cancelAmount +"원을 결제 취소하였습니다.");
+                            await modifyRf(refundId, "rf7", reply)
+                            window.location.reload();
+                            // let rfDet = document.getElementById("rfDet");
+                            // rfDet.value = "rf7";
+                            // rfDet.disabled = true;
+                        }
+                    }
+                }else{
+                    alert(`결제 취소 중 오류 발생 (${resp.status})`)
+                    return false;
+                }
+            }else{
+                alert("결제 취소 진행을 취소하였습니다.");
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    /* 비동기 rf 상태 수정 */
+    async function modifyRf(refundId, rfDet, reply){
+        let url = "http://"+document.location.host+"/refund/admin/"+refundId+"/modify.do"
+        let modifyForm = new FormData();
+        modifyForm.set("refundId", refundId);
+        modifyForm.set("rfDet", rfDet);
+        modifyForm.set("reply", reply)
+        const resp = await fetch(url, {method: "POST", body: modifyForm, redirect: "manual"})
+        console.log(resp)
+        if (resp.status !== 0){
+            alert(`상태 수정 중 오류 발생 (${resp.status})`)
+        }
+    }
+
+    /* rfDet disabled 풀기 */
+    function resetRfDet(){
+        let rfDet = [[${refund.rfDet}]];
+        console.log("rfDet: ", rfDet)
+        if (rfDet.toString() !== "rf7"){ // 환불 완료 상태가 아닐 시
+            let rfDetOpt = document.querySelectorAll(".rfDet");
+            rfDetOpt.forEach(element=>{
+                if (element.value === "rf0" || element.value === "rf1"){
+                    console.log("rfDet: "+element.value)
+                }else{ // 환불 요청과 환불 요청 취소가 아닌 상태는
+                    element.disabled = false  // 이용할 수 있다.
+                }
+            })
+            alert("이제 상태를 이전 단계로 되돌릴 수 있습니다.")
+        }else{
+            alert("이미 완료된 상태는 변경할 수 없습니다.")
+        }
+    }
+
+    /* refund 제출 시 이벤트 */
+    function submitRefund(){
+        let rfDet = document.getElementById("rfDet");
+        let rfDetNum = Number(currentRfDet.slice(2));
+        if( rfDetNum > 3 && rfDet.value === "rf7" ){
+            let doCancel = confirm("환불 완료로 상태 제출 시 결제 취소가 자동으로 진행됩니다. 정말 제출하시겠습니까?")
+            if(doCancel){
+                this.event.preventDefault();
+                console.log("prevent?")
+                return cancelPayments();
+
+            }else{
+                return false;
+            }
+        }else if(rfDetNum < 4 && rfDet.value === "rf7"){
+            alert("환불 물품이 수거되지 않아 상태를 환불 완료로 변경할 수 없습니다.")
+            return false;
+        }else if(rfDetNum > 3 && rfDet.value === "rf8"){
+            alert("")
+            return false;
+        }
+    }
+
+
+
+    /* 결제 취소 영수증 팝업 불러오기 */
+    let receiptUrl = document.querySelectorAll(".receiptUrl");
+    receiptUrl.forEach(url=>{
+        url.addEventListener("click",()=>{
+            window.open(url.dataset.receipt, "cancelReceipt", "width=450, height=600, resizable=no")
+        })
+    })
+</script>
+
+</div>
+</html>
