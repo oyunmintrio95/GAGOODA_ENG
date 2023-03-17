@@ -62,3 +62,4 @@
 
 * 마이 페이지
 <img src="https://github.com/hykim-king/GAGOODA/blob/main/doc/mypage.gif"  width="800" height="400"/>
+   
