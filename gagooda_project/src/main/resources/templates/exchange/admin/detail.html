@@ -5,39 +5,39 @@
       layout:decorate="~{/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Exchange Detail</title>
 </head>
 <div layout:fragment="content">
-    <h3>주문 내역</h3>
+    <h3>Order Detail</h3>
     <th:block th:if="${order != null}">
         <table class="table">
             <tr>
-                <th class="col-2">주문 날짜</th>
+                <th class="col-2">Order Date</th>
                 <td class="col-4" th:text="${#dates.format(order.regDate, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             <tr>
-                <th class="col-2">주문번호</th>
+                <th class="col-2">Order ID</th>
                 <td class="col-4" id="orderId" th:text="${order.orderId}"></td>
             </tr>
             <tr>
-                <th class="col-2">총 구매 금액</th>
+                <th class="col-2">SubTotal</th>
                 <td class="col-4" th:text="${order.totalPrice}"></td>
 
             </tr>
             <tr>
-                <th class="col-2">주문자</th>
+                <th class="col-2">Name</th>
                 <td class="col-4" th:text="${order.userName}"></td>
             </tr>
             <tr>
-                <th class="col-2">주문자 전화번호</th>
+                <th class="col-2">Phone Number</th>
                 <td class="col-4" th:text="${order.userPhone}"></td>
             </tr>
             <tr>
-                <th class="col-2">주문자 이메일</th>
+                <th class="col-2">Email</th>
                 <td class="col-4" th:text="${order.userEmail}"></td>
             </tr>
             <tr>
-                <th class="col-2">주문 상품</th>
+                <th class="col-2">Ordered Product</th>
                 <td class="col-4">
                     <th:block th:if="${!order.orderDetailList.isEmpty() && order.orderDetailList != null}">
                         <span th:text="${order.orderDetailList[0].optionName + ' 등'}"></span>
@@ -48,49 +48,49 @@
         </table>
     </th:block>
 
-    <h3>교환 요청 정보</h3>
+    <h3>Exchange Request Info</h3>
     <table class="table">
         <thead>
         <tr class="text-center">
-            <th colspan="2">교환 요청 상품</th>
-            <th colspan="2">수령인 정보</th>
+            <th colspan="2">Exchange Request Product</th>
+            <th colspan="2">Receiver Info</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <th class="col-2">상품명</th>
+            <th class="col-2">Product</th>
             <td class="col-4" th:text="${orderDetail.optionName}"></td>
-            <th class="col-2">수령인</th>
+            <th class="col-2">Receiver</th>
             <td class="4" th:text="${exchange.receiverName}"></td>
         </tr>
         <tr>
-            <th class="col-2">교환 요청 수량</th>
+            <th class="col-2">Count</th>
             <td class="col-4" >
                 <span th:text="${exchange.cnt}"></span>
             </td>
-            <th class="col-2">수령인 연락처</th>
+            <th class="col-2">Receiver Phone Number</th>
             <td class="col-4" th:text="${exchange.receiverPhone}"></td>
         </tr>
         <tr>
-            <th class="col-2">교환 요청 분류</th>
+            <th class="col-2">Exchange Request Selection</th>
             <td class="col-4" th:text="${exchange.rfrDetDto.detName}"></td>
-            <th class="col-2">수령인 주소</th>
+            <th class="col-2">Receiver Address</th>
             <td class="col-4">
                 <div>(<span th:text="${exchange.postCode}"></span>) <span th:text="${exchange.address}"></span></div>
                 <div th:text="${exchange.addressDetail}"></div>
             </td>
         </tr>
         <tr>
-            <th class="col-2">교환 요청 사유</th>
+            <th class="col-2">Exchange Reason</th>
             <td class="col-4" th:text="${exchange.reason}"></td>
-            <th class="col-2">엘리베이터 유무</th>
+            <th class="col-2">Elevator</th>
             <td class="col-4">
                 <div th:if="${exchange.elevator == 1}">O</div>
                 <div th:unless="${exchange.elevator == 1}">X</div>
             </td>
         </tr>
         <tr>
-            <th class="col-2">첨부 이미지</th>
+            <th class="col-2">Upload Image</th>
             <td class="col-4">
                 <th:block th:if="${!exchange.imageList.isEmpty() && exchange.imageList != null}" th:each="img:${exchange.imageList}">
                     <img th:src="@{'/img/exchange/{imgPath}'(imgPath = ${img.imgPath})}" alt="" style="width: 200px; height: 200px; object-fit: cover;">
@@ -101,55 +101,55 @@
     </table>
 
 
-    <h3>교환 상태 변경</h3>
+    <h3>Update Exchange State</h3>
     <table class="table">
         <tbody>
             <tr>
-                <th class="col-1">옵션 상품 코드</th>
+                <th class="col-1">Option Product Code</th>
                 <td class="col-11" th:text="${orderDetail.optionCode}"></td>
             </tr>
             <tr>
-                <th class="col-1">상세 주문 수량</th>
+                <th class="col-1">Order Detail Count</th>
                 <td class="col-11" th:text="${orderDetail.cnt}"></td>
             </tr>
             <tr>
-                <th class="col-1">교환 요청 수량</th>
+                <th class="col-1">Exchange Request Count</th>
                 <td class="col-11" th:text="${exchange.cnt}"></td>
             </tr>
             <tr>
-                <th class="col-1">상품 재고 수량</th>
+                <th class="col-1">Available Stock</th>
                 <td class="col-11" >
                     <span th:text="${optionProduct.stock}"></span>
-                    <span th:if="${!exchange.exDet.equals('ex7')}" th:text="${'(교환 시 재고량: ' + (optionProduct.stock - exchange.cnt)} + ')'"></span>
+                    <span th:if="${!exchange.exDet.equals('ex7')}" th:text="${'(After Exchange: ' + (optionProduct.stock - exchange.cnt)} + ')'"></span>
                 </td>
             </tr>
         </tbody>
     </table>
     <div class="d-flex">
-        <div>현재 교환 진행 상태: </div>
+        <div>Exchange State: </div>
         <div id="detName" th:text="${exchange.exDetDto.detName}"></div>
     </div>
     <form name="modify" th:action="@{'/exchange/admin/{exchangeId}/modify.do' (exchangeId=${exchange.exchangeId})}" method="POST" onsubmit="return exchangeSubmitFilter()">
         <div>
-            <label class="form-label" for="exDet">상태 변경</label>
+            <label class="form-label" for="exDet">Update State</label>
             <select class="form-select-sm" name="exDet" id="exDet" required th:disabled="${exchange.exDet.equals('ex1')}">
-                <option value="" selected disabled>변경할 상태를 선택하세요.</option>
+                <option value="" selected disabled>Choose State to update.</option>
                 <th:block th:each="exCode:${exCodeList}">
                     <option class="exDet" th:value="${exCode.detCode}" th:text="${exCode.detName}" th:data-exNum="${exCode.detCode.substring(2)}"></option>
                 </th:block>
             </select>
             <div>
-                <button class="btn btn-outline-secondary resetExDet" type="button" onclick="resetExDet()">이전 상태 사용</button>
-                <button class="btn btn-outline-danger reStartExDet d-none" id="reStartExDet" type="button" >재교환 진행하기</button>
-                <button id="stockSubBtn" class="btn btn-outline-primary d-none" type="button" onclick="modifyStock()">재고 변경 진행</button>
+                <button class="btn btn-outline-secondary resetExDet" type="button" onclick="resetExDet()">Previous State</button>
+                <button class="btn btn-outline-danger reStartExDet d-none" id="reStartExDet" type="button" >Re-exchange</button>
+                <button id="stockSubBtn" class="btn btn-outline-primary d-none" type="button" onclick="modifyStock()">Update Stock</button>
             </div>
         </div>
         <div>
-            <label class="form-label d-block" for="reply">교환 요청 답변</label>
+            <label class="form-label d-block" for="reply">Reply Exchange Request</label>
             <div th:text="'이전 답변: '+${exchange.reply}"></div>
             <textarea class="form-text form-control-sm" required name="reply" id="reply" cols="70" rows="10" style="resize: none"></textarea>
         </div>
-        <button class="btn btn-outline-primary exchangeSubmit" type="submit" th:disabled="${exchange.exDet.equals('ex1') }">등록</button>
+        <button class="btn btn-outline-primary exchangeSubmit" type="submit" th:disabled="${exchange.exDet.equals('ex1') }">Register</button>
     </form>
     <script th:inline="javascript">
         /* exDet 지난 상태 막기 */
@@ -184,7 +184,7 @@
                         element.disabled = false  // 이용할 수 있다.
                     }
                 })
-                alert("이제 상태를 이전 단계로 되돌릴 수 있습니다.")
+                alert("You can return the state to the previous state.")
             }else if(exDet.toString() === "ex5" || exDet.toString() === "ex6"){
                 exDetOpt.forEach(element=>{
                     if (element.value === "ex5" || element.value === "ex6" || element.value === "ex8"){ // 교환 배송 중/배송 완료/거절 상태는
@@ -192,9 +192,9 @@
                     }else{
                     }
                 })
-                alert("교환을 위한 재고가 출고되었으므로, 수거 완료 이후에 해당하는 단계로만 되돌릴 수 있습니다.")
+                alert("The product has been shipped for exchange, You can only return to the previous stage after the product is picked up.")
             }else{
-                alert("교환 완료 혹은 거절된 상태는 재교환 진행 버튼을 통해 교환 수거부터 다시 진행하시기 바랍니다.")
+                alert("If the state is 'Exchange completed' or 'rejected', then proceed from the 'pick-up' again.")
             }
         }
 
@@ -204,9 +204,9 @@
             reStartExDet.classList.remove("d-none");
         }
         reStartExDet.onclick=async ()=>{
-            let isBack = confirm("재교환을 진행하시겠습니까? \n재교환 진행 시 교환 진행 상태가 교환 요청 확인 상태로 변경됩니다.");
+            let isBack = confirm("Do you want to proceed re-exchange? \nIf you re-exchange, the state will be updated to 'Exchange Request Checked'.");
             if (isBack){
-                let msg = prompt("재교환 진행을 위한 답글을 작성해주십시오.\n(미작성 시 미리 입력된 값이 넘어갑니다.",
+                let msg = prompt("Please post reply for re-exchange",
                     "고객님, 죄송합니다. 교환된 상품에도 하자가 발견되었다는 문의 확인했습니다. 수거를 위한 배송 기사님을 빠른 시일 내에 배정하여 " +
                     "상품 수거 후 판별하여 새로운 상품을 보내드리도록 하겠습니다. 감사합니다.")
                 if (msg != null){
@@ -218,9 +218,9 @@
                     if(resp.status === 200){
                         window.location.reload();
 
-                        alert("재교환을 위해 상태를 변경했습니다.")
+                        alert("Updated the state for re-exchange.")
                     }else{
-                        alert("상태 되돌리기에 실패하였습니다.")
+                        alert("Failed to return the state.")
                     }
                 }
             }
