@@ -22,13 +22,13 @@
                                     <a class="nav-link text-white active" aria-current="page" href="/user/g0/signup.do">회원가입</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/user/g1/signup.do">관리자 회원가입</a>
+                                    <a class="nav-link text-white" href="/user/g1/signup.do">Admin Signup</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/user/login.do">로그인</a>
+                                    <a class="nav-link text-white" href="/user/login.do">Login</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/user/findpw.do">비밀번호 찾기</a>
+                                    <a class="nav-link text-white" href="/user/findpw.do">Find Password</a>
                                 </li>
                             </ul>
                         </th:block>
@@ -39,16 +39,16 @@
                                        th:text="${session.loginUser.nickname}"></p>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/mypage/user_yes/main.do" aria-current="page">마이페이지</a>
+                                    <a class="nav-link text-white" href="/mypage/user_yes/main.do" aria-current="page">My Page</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/cart/user_yes/mypage/list.do">장바구니</a>
+                                    <a class="nav-link text-white" href="/cart/user_yes/mypage/list.do">Cart</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/user/user_yes/logout.do">로그아웃</a>
+                                    <a class="nav-link text-white" href="/user/user_yes/logout.do">Log Out</a>
                                 </li>
                                 <li class="nav-item" th:if="${session.loginUser!=null and session.loginUser.GDet.equals('g1')}">
-                                    <a class="nav-link text-white" href="/">사용자페이지</a>
+                                    <a class="nav-link text-white" href="/">Userpage</a>
                                 </li>
                             </ul>
                         </th:block>
@@ -92,18 +92,18 @@
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a href="/admin/dev" class="nav-link">관리자 메인</a>
+                                    <a href="/admin/dev" class="nav-link">Admin Main</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        주문
+                                        Order
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/order/admin/list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                주문 기록
+                                                Order Record
                                             </a>
                                         </li>
                                     </ul>
@@ -111,13 +111,13 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        배송
+                                        Delivery
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/delivery/admin/list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                배송 기록
+                                                Delivery Record
                                             </a>
                                         </li>
                                     </ul>
@@ -125,13 +125,13 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        교환
+                                        Exchange
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/exchange/admin/list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                교환 기록
+                                                Exchange Record
                                             </a>
                                         </li>
                                     </ul>
@@ -139,13 +139,13 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        환불
+                                        Refund
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/refund/admin/list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                환불 기록
+                                                Refund Record
                                             </a>
                                         </li>
                                     </ul>
@@ -153,13 +153,13 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        상품 문의
+                                        Product Inquiry
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/product_inquiry/admin/list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                문의 기록
+                                                Product Inquiry Record
                                             </a>
                                         </li>
                                     </ul>
@@ -167,19 +167,19 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        상품
+                                        Product
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/product/admin/product_list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                상품 목록
+                                                Product List
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a href="/product/admin/register.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                상품 등록
+                                                Product Register
                                             </a>
                                         </li>
                                     </ul>
@@ -187,13 +187,13 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        리뷰
+                                        Review
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a href="/review/admin/list.do"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                리뷰 목록
+                                                Review List
                                             </a>
                                         </li>
                                     </ul>

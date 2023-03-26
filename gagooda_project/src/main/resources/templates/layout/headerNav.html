@@ -26,7 +26,7 @@
                         <th:block th:if="${session.loginUser == null}">
                             <ul class="navbar-nav ">
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/user/login.do">로그인</a>
+                                    <a class="nav-link text-white" href="/user/login.do">Login</a>
                                 </li>
                             </ul>
                         </th:block>
@@ -40,13 +40,13 @@
                                     <a class="nav-link text-white" href="/mypage/user_yes/main.do" aria-current="page">마이페이지</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/cart/user_yes/mypage/list.do">장바구니</a>
+                                    <a class="nav-link text-white" href="/cart/user_yes/mypage/list.do">Shopping Cart</a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link text-white" href="/user/user_yes/logout.do">로그아웃</a>
+                                    <a class="nav-link text-white" href="/user/user_yes/logout.do">Logout</a>
                                 </li>
                                 <li class="nav-item " th:if="${session.loginUser!=null and session.loginUser.GDet.equals('g1')}">
-                                    <a class="nav-link text-white" href="/admin/dev">관리자페이지</a>
+                                    <a class="nav-link text-white" href="/admin/dev">Admin Page</a>
                                 </li>
                             </ul>
                         </th:block>
@@ -99,139 +99,139 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        침실
+                                        Bedroom
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=1)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                전체보기
+                                                All
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=11)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>침대</strong>
+                                                <strong>Bed</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=111)}"
                                                style="text-decoration: none; color: #7c7c7c; font-size: 12px">
-                                                모션베드
+                                                Motion bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=112)}"
                                                style="text-decoration: none; color: #7c7c7c; font-size: 12px">
-                                                일반침대
+                                                Regular bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=113)}"
                                                style="text-decoration: none; color: #7c7c7c; font-size: 12px">
-                                                패밀리침대
+                                                Family bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=114)}"
                                                style="text-decoration: none; color: #7c7c7c; font-size: 12px">
-                                                매트리스
+                                                Mattresses
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=115)}"
                                                style="text-decoration: none; color: #7c7c7c; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=12)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>매트리스</strong>
+                                                <strong>Mattresses</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=121)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                매트리스
+                                                Mattresses
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=122)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                커버/패드
+                                                Cover/Sheet
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=13)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>옷장</strong>
+                                                <strong>Closet</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=131)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                옷장/붙박이장
+                                                Closet
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=132)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                드레스룸
+                                                Dress room
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=133)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                수납가구/ACC
+                                                Wardrobe/ACC
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=14)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>수납장</strong>
+                                                <strong>Drawer</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=141)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                협탁
+                                                Side Table
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=142)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                서랍장
+                                                Drawer
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=143)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                파티션수납장
+                                                Partition drawer
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=15)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>화장대</strong>
+                                                <strong>Dressing table</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=151)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                화장대
+                                                Dressing table
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=152)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                스툴
+                                                Stool
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=153)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                거울/액세서리
+                                                Mirrors/Accessories
                                             </a>
                                         </li>
                                     </ul>
@@ -239,127 +239,127 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        거실
+                                        Living room
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=2)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                전체보기
+                                                All
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=21)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>테이블</strong>
+                                                <strong>Table</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=211)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                소파 테이블
+                                                Sofa Table
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=212)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                패밀리 테이블
+                                                Family Table
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=213)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                멀티테이블
+                                                Multi Table
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=214)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=22)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>거실장</strong>
+                                                <strong>Shelving</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=221)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                거실장
+                                                Shelving
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=23)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>소파</strong>
+                                                <strong>sofa</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=231)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                일자형
+                                                Straight
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=232)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                카우치/코너
+                                                Couch/Corner
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=233)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                인/소파베드
+                                                In/Sofabed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=234)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                리클라이너
+                                                Recliner
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=235)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=24)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>수납장</strong>
+                                                <strong>Cabinet</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=241)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                책장
+                                                Shelving
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=242)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                장식장
+                                                Shelves
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=243)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                서랍장
+                                                Drawers
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=244)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=25)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>액세서리</strong>
+                                                <strong>Accessories</strong>
                                             </a>
                                         </h5>
                                     </ul>
@@ -367,49 +367,49 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        주방
+                                        Kitchen
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=3)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                전체보기
+                                                All
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=31)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>식탁</strong>
+                                                <strong>Dining Tables</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=311)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                식탁
+                                                Dining Tables
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=32)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>수납장</strong>
+                                                <strong>Storage</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=321)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                수납장
+                                                Cabinet
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=322)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=33)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>의자</strong>
+                                                <strong>Chair</strong>
                                             </a>
                                         </h5>
                                     </ul>
@@ -417,109 +417,109 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        키즈룸
+                                        Kids' Room
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=4)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                전체보기
+                                                All
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=41)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>침대</strong>
+                                                <strong>Bed</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=411)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                침대
+                                                Bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=412)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                매트리스
+                                                Mattresses
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=413)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=42)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>책상</strong>
+                                                <strong>Desk</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=421)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                책상
+                                                Desk
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=422)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=43)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>수납장</strong>
+                                                <strong>Storage</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=431)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                서랍/수납장
+                                                Drawer/Cabinet
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=432)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                책장
+                                                Shelves
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=433)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                옷장/행거
+                                                Wardrobe/Hanger
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=434)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                놀이장
+                                                Playspace
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=44)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>소파/의자</strong>
+                                                <strong>Sofa/Chair</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=441)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                소파
+                                                Sofa
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=442)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                의자
+                                                Chair
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=45)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>액세서리</strong>
+                                                <strong>Accessories</strong>
                                             </a>
                                         </h5>
                                     </ul>
@@ -527,133 +527,133 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        학생방
+                                        Student Room
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=5)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                전체보기
+                                                All
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=51)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>책상</strong>
+                                                <strong>Desk</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=511)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                일반형
+                                                Regular
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=512)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                기능형
+                                                Functional
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=413)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=52)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>책장</strong>
+                                                <strong>Shelves</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=521)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                책장
+                                                Book Shelves
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=522)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=53)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>수납장</strong>
+                                                <strong>Storage</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=531)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                서랍장
+                                                Drawers
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=532)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                옷장
+                                                Wardrobes
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=533)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                수납가구/ACC
+                                                Cabinet/ACC
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=54)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>의자</strong>
+                                                <strong>Chairs</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=541)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                의자
+                                                Chair
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=542)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=55)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>침대</strong>
+                                                <strong>Beds</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=551)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                일반침대
+                                                Regular Bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=552)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                수납침대
+                                                Storage Bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=553)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                모션침대
+                                                Motion Bed
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=554)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                매트리스
+                                                Mattresses
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=555)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                     </ul>
@@ -661,103 +661,103 @@
                                 <li class="nav-item dropdown">
                                     <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false" style="border: none; background-color:transparent;">
-                                        서재
+                                        Study Room
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=6)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                전체보기
+                                                All
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=61)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>책상</strong>
+                                                <strong>Desk</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=611)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                일반형
+                                                Regular
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=612)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                모션형
+                                                Motion
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=613)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=62)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>책장</strong>
+                                                <strong>Book Shelves</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=621)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                책장
+                                                Book Shelves
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=622)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                액세서리
+                                                Accessories
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=63)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>서랍장</strong>
+                                                <strong>Drawers</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=631)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                책상서랍
+                                                Desk Drawers
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=64)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>의자</strong>
+                                                <strong>Chairs</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=641)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                태스크의자
+                                                Task Chairs
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=642)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                보조의자
+                                                Assist Chairs
                                             </a>
                                         </li>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=643)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                프리미엄의자
+                                                Premium Chairs
                                             </a>
                                         </li>
                                         <h5 class="dropdown-header">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=65)}"
                                                style="text-decoration: none; color: #B68C68; font-size: 16px">
-                                                <strong>수납장</strong>
+                                                <strong>Cabinet</strong>
                                             </a>
                                         </h5>
                                         <li class="dropdown-item">
                                             <a th:href="@{'/product/{categoryId}/list.do'(categoryId=651)}"
                                                style="text-decoration: none; color: #4C4C4C; font-size: 12px">
-                                                장식장
+                                                Cabinet
                                             </a>
                                         </li>
                                     </ul>
@@ -770,16 +770,16 @@
                         <ul class="navbar-nav">
                             <div class="d-flex">
                                 <li class="nav-item">
-                                    <a class="nav-link p-2 fw-semibold" href="#">세일</a>
+                                    <a class="nav-link p-2 fw-semibold" href="#">Sale</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link p-2 fw-semibold" href="#">이벤트</a>
+                                    <a class="nav-link p-2 fw-semibold" href="#">Event</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link p-2 fw-semibold" href="#">공지</a>
+                                    <a class="nav-link p-2 fw-semibold" href="#">Notification</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link p-2 fw-semibold" th:href="@{'/community/list.do'}">우리집 GAGOODA</a>
+                                    <a class="nav-link p-2 fw-semibold" th:href="@{'/community/list.do'}">My GAGOODA</a>
                                 </li>
                             </div>
                         </ul>
@@ -809,7 +809,7 @@
             if (resp.status === 200) {
                 document.getElementById("quickListBox").innerHTML = await resp.text();;
             } else {
-                alert("요청 오류"+resp.status);
+                alert("Request Error"+resp.status);
             }
         }
 

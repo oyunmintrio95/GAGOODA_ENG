@@ -47,17 +47,17 @@
             <div class="accordion-item overflow-scroll">
                 <h2 class="accordion-header" id="q-recentProduct">
                     <button class="accordion-button collapsed" style="font-size: 12px; font-weight: bold; background-color: #FFFAF5 !important; color: #b68c68 !important;" type="button" data-bs-toggle="collapse" data-bs-target="#quick-recentProduct" aria-expanded="false">
-                        장바구니
+                        Shopping Cart
                     </button>
                 </h2>
                 <div id="quick-recentProduct" class="accordion-collapse collapse" >
-                    <div class="accordion-body">상품 이미지</div>
+                    <div class="accordion-body">Product Image</div>
                     <th:block th:each="cart:${cartList}" th:if="${cartList != null}">
                         <a th:href="@{'/product/{productCode}/detail.do'(productCode=${cart.productCode})}">
                             <img th:src="@{'/img/product/{imgPath}'(imgPath=${cart.product.imageList[0].imgPath})}" th:alt="${cart.product.pname}" style="width: 100px; height: 100px; object-fit: cover;">
                         </a>
                     </th:block>
-                    <a href="/cart/user_yes/mypage/list.do" class="atag-viewAll nav-link text-center">전체보기</a>
+                    <a href="/cart/user_yes/mypage/list.do" class="atag-viewAll nav-link text-center">All</a>
                 </div>
             </div>
             <!-- 최근 본 상품 end-------------------------->
@@ -65,17 +65,17 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="q-zzimProduct">
                     <button class="accordion-button collapsed" type="button" style="font-size: 12px; font-weight: bold; background-color: #FFFAF5 !important; color: #b68c68 !important;" data-bs-toggle="collapse" data-bs-target="#quick-zzimProduct" aria-expanded="false">
-                        찜한 상품
+                        My interest product
                     </button>
                 </h2>
                 <div id="quick-zzimProduct" class="accordion-collapse collapse">
-                    <div class="accordion-body">상품 이미지</div>
+                    <div class="accordion-body">Product Image</div>
                     <th:block th:each="zzim:${zzimList}" th:if="${zzimList != null}">
                         <a th:href="@{'/product/{productCode}/detail.do'(productCode=${zzim.productCode})}">
                             <img style="width: 100px; height: 100px; object-fit: cover;" th:alt="${zzim.product.pname}" th:src="@{'/img/product/{imgPath}'(imgPath=${zzim.product.imageList[0].imgPath})}" alt="">
                         </a>
                     </th:block>
-                    <a th:href="@{/zzim/user_yes/mypage/list.do}" class="atag-viewAll nav-link text-center">전체보기</a>
+                    <a th:href="@{/zzim/user_yes/mypage/list.do}" class="atag-viewAll nav-link text-center">All</a>
                 </div>
             </div>
             <!-- 찜한 상품 end ------------------------------>
