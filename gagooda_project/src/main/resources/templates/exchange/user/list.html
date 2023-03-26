@@ -15,16 +15,16 @@
     </style>
 </head>
 <div layout:fragment="myPageContent">
-    <h2>유저 교환 목록</h2>
+    <h2>User Exchange List</h2>
     <span class="currentPeriod" th:text="${param.period}" style="display: none"></span>
     <div class="d-flex justify-content-between my-3">
         <ul class="nav ">
             <!--공통 코드별(진행:ex0,ex2,ex3,ex4,ex5,ex6 / 완료:ex1,ex7,ex8) 선택 조회-->
-            <li class="nav-item "><a class="nav-link afterCode btn" href="javascript:void(0)"  data-val="all" style="text-decoration: none; color:#B68C68;">전체 교환 내역</a></li>
-            <li class="nav-item"><a class="nav-link afterCode" href="javascript:void(0)" data-val="notEnd" style="text-decoration: none; color:#B68C68;">교환 진행 내역</a></li>
-            <li class="nav-item"><a class="nav-link afterCode" href="javascript:void(0)" data-val="end" style="text-decoration: none; color:#B68C68;">교환 완료 내역</a></li>
+            <li class="nav-item "><a class="nav-link afterCode btn" href="javascript:void(0)"  data-val="all" style="text-decoration: none; color:#B68C68;">All</a></li>
+            <li class="nav-item"><a class="nav-link afterCode" href="javascript:void(0)" data-val="notEnd" style="text-decoration: none; color:#B68C68;">On progress</a></li>
+            <li class="nav-item"><a class="nav-link afterCode" href="javascript:void(0)" data-val="end" style="text-decoration: none; color:#B68C68;">Completed</a></li>
             <!--공통 코드별(진행:ex0,ex2,ex3,ex4,ex5,ex6 / 완료:ex1,ex7,ex8) 선택 조회 end-->
-            <li class="nav-link disabled">( 총 <th:block th:text="${userExchangeCount}"></th:block> 건)</li>
+            <li class="nav-link disabled">(total: <th:block th:text="${userExchangeCount}"></th:block>)</li>
         </ul>
         <!-- 기간 검색 조회-->
         <form  th:action="@{ '' }" method="get" class="d-flex align-self-end" style="height: 40px;">
@@ -40,11 +40,11 @@
     <div class="nav-tabs" >
         <ul class="nav">
             <!-- 기간 선택 조회-->
-            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="7" style="text-decoration: none; color:#B68C68;">7일</a></li>
-            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="15" style="text-decoration: none; color:#B68C68;">15일</a></li>
-            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="30" style="text-decoration: none; color:#B68C68;">1개월</a></li>
-            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="90" style="text-decoration: none; color:#B68C68;">3개월</a></li>
-            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="365" style="text-decoration: none; color:#B68C68;">1년</a></li>
+            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="7" style="text-decoration: none; color:#B68C68;">7 Days</a></li>
+            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="15" style="text-decoration: none; color:#B68C68;">15 Days</a></li>
+            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="30" style="text-decoration: none; color:#B68C68;">A month</a></li>
+            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="90" style="text-decoration: none; color:#B68C68;">3 Monts</a></li>
+            <li class="nav-item"><a class="nav-link afterParam" href="javascript:void(0)" data-val="365" style="text-decoration: none; color:#B68C68;">1 year</a></li>
             <!-- 기간 선택 조회 end-->
         </ul>
     </div>
@@ -53,12 +53,12 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col" class="text-center">교환 요청 날짜</th>
-            <th scope="col" class="text-center">주문번호</th>
-            <th scope="col" class="text-center">상품명</th>
-            <th scope="col" class="text-center">주문 수량</th>
-            <th scope="col" class="text-center">교환 수량</th>
-            <th scope="col" class="text-center">처리 현황</th>
+            <th scope="col" class="text-center">Exchange Request Date</th>
+            <th scope="col" class="text-center">Order ID</th>
+            <th scope="col" class="text-center">Product Name</th>
+            <th scope="col" class="text-center">Order Quantity</th>
+            <th scope="col" class="text-center">Exchange Quantity</th>
+            <th scope="col" class="text-center">State</th>
         </tr>
         </thead>
         <tbody>
@@ -78,7 +78,7 @@
         </tbody>
     </table>
     <th:block th:if="${userExchangeCount == 0}">
-        <h3>교환 내역이 없습니다.</h3>
+        <h3>There is no exchange record.</h3>
     </th:block>
 
     <!--pagination-->

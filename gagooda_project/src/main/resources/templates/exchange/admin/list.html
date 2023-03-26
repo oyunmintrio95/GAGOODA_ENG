@@ -5,59 +5,59 @@
       layout:decorate="~{/layout/adminLayout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Exchange Request List-Admin</title>
 </head>
 <div layout:fragment="content">
-    <h2>환불 신청 목록</h2>
+    <h2>Exchange Request List</h2>
     <form action="/exchange/admin/list.do" method="get" id="searchForm" name="searchForm">
         <div>
-            <label class="d-block">검색 키워드 :
+            <label class="d-block">Search Keyword :
                 <select name="searchDiv" id="searchDiv">
-                    <option value="" selected disabled>검색 분류 선택</option>
-                    <option value="order_id">주문번호</option>
-                    <option value="uname">신청자명</option>
-                    <option value="phone">신청자 전화번호</option>
+                    <option value="" selected disabled>Search Selection</option>
+                    <option value="order_id">Order ID</option>
+                    <option value="uname">Name</option>
+                    <option value="phone">Phone Number</option>
                 </select>
                 <input type="text" id="searchWord" name="searchWord">
             </label>
-            <label class="d-block">검색 일시 :
+            <label class="d-block">Date Selection :
                 <select name="dateType" id="dateType">
-                    <option selected disabled>검색 일시 분류</option>
-                    <option value="reg_date">요청 일시</option>
-                    <option value="mod_date">상태 수정 일시</option>
+                    <option selected disabled>Choose</option>
+                    <option value="reg_date">Request Date</option>
+                    <option value="mod_date">State Updated Date</option>
                 </select>
                 <input type="date" id="startDate" name="startDate"> ~
                 <input type="date" id="endDate" name="endDate">
             </label>
             <div class="d-flex">
-                <span>진행 상태 :</span>
-                <label><input type="checkbox" name="exDet" id="ex0" value="ex0" > 교환 요청 </label>
-                <label><input type="checkbox" name="exDet" id="ex1" value="ex1" > 교환 요청 취소 </label>
-                <label><input type="checkbox" name="exDet" id="ex2" value="ex2" > 교환 요청 확인 </label>
-                <label><input type="checkbox" name="exDet" id="ex3" value="ex3" > 교환 수거 중 </label>
-                <label><input type="checkbox" name="exDet" id="ex4" value="ex4" > 교환 수거 완료 </label>
-                <label><input type="checkbox" name="exDet" id="ex5" value="ex5" > 교환 배송 중 </label>
-                <label><input type="checkbox" name="exDet" id="ex6" value="ex6" > 교환 배송 완료 </label>
-                <label><input type="checkbox" name="exDet" id="ex7" value="ex7" > 교환 완료 </label>
-                <label><input type="checkbox" name="exDet" id="ex8" value="ex8" > 교환 거절 </label>
+                <span>State :</span>
+                <label><input type="checkbox" name="exDet" id="ex0" value="ex0" > Request Exchange </label>
+                <label><input type="checkbox" name="exDet" id="ex1" value="ex1" > Cancel Exchange Request</label>
+                <label><input type="checkbox" name="exDet" id="ex2" value="ex2" > Exchange Request Confirmed </label>
+                <label><input type="checkbox" name="exDet" id="ex3" value="ex3" > Picking up</label>
+                <label><input type="checkbox" name="exDet" id="ex4" value="ex4" > Completed pick-up </label>
+                <label><input type="checkbox" name="exDet" id="ex5" value="ex5" > Shipping Exchange</label>
+                <label><input type="checkbox" name="exDet" id="ex6" value="ex6" > Completed Delivery</label>
+                <label><input type="checkbox" name="exDet" id="ex7" value="ex7" > Completed Exchange </label>
+                <label><input type="checkbox" name="exDet" id="ex8" value="ex8" > Reject Exchange</label>
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-secondary">검색</button>
-        <button name="reset" type="reset" class="btn btn-outline-primary">초기화</button>
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+        <button name="reset" type="reset" class="btn btn-outline-primary">Reset</button>
     </form>
     <h3>교환 신청 <span th:text="${allCount}"></span></h3>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>작성자</th>
-            <th>주문 ID</th>
-            <th>상세 주문 ID</th>
-            <th>옵션 상품 ID</th>
-            <th>주문 상품 수량</th>
-            <th>교환 요청 수량</th>
-            <th>교환 진행 상태</th>
-            <th>교환 신청일</th>
-            <th>최근 상태 변경일</th>
+            <th>UserName</th>
+            <th>Order ID</th>
+            <th>Order Detail ID</th>
+            <th>Option Product ID</th>
+            <th>Order Product Quantity</th>
+            <th>Exchange Request Quantity</th>
+            <th>State</th>
+            <th>Exchange Request Date</th>
+            <th>State Updated Date</th>
         </tr>
         </thead>
         <tbody>
@@ -76,7 +76,7 @@
         </th:block>
         </tbody>
     </table>
-    <th:block th:unless="${exchangeCount >= 0}"><div>해당 교환 내역이 존재하지 않습니다.</div></th:block>
+    <th:block th:unless="${exchangeCount >= 0}"><div>There is no exchange record.</div></th:block>
 
     <!--pagination-->
     <div th:include="/pagination.html"></div>
@@ -92,7 +92,7 @@
                 let exchangeId = row.dataset.exchange;
                 let exDet = row.dataset.exdet;
                 if(exDet === "ex0" ){
-                    let isOk = confirm("진행 상태가 '교환 요청 확인' 상태로 바뀝니다. 확인하시겠습니까?");
+                    let isOk = confirm("The state will be changed to 'Exchange Request Confirmed'.Confirm?");
                     if(isOk){
                         modifyRf(exchangeId);
                         setTimeout(()=>{document.location.href = targetHref}, 200);
