@@ -2,38 +2,38 @@
 
 <br>
 
-# 목차
+# Contents
 
 
->[프로젝트 개요](#프로젝트-개요)\
+>[About the Project](#프로젝트-개요)\
 ><br>
->[프로젝트 기획](#프로젝트-기획)\
+>[Project Proposal](#프로젝트-기획)\
 ><br>
->[프로젝트 설계](#프로젝트-설계)\ 
+>[Project Blueprint](#프로젝트-설계)\ 
 ><br>
->[기능 시연](#기능-시연)
+>[Demonstartion](#기능-시연)
 ><br>
 
 
 <br>
 <br>
 
-# 프로젝트 개요
+# About the Project
 
-|팀/프로젝트 명|GAGOODA|  
+|Project Name|GAGOODA|  
 |:-----:|:-----|  
-|팀원|천하민, 천하영, 구도윤, 이창국, 김현섭, 양한나, 유한비, 훈|
-|프로젝트 종류|쇼핑몰 (가정용 가구)|
-|기간|2023.01.04 ~ 2023.03.07|
-|프로젝트 목표|1. 유저층이 이용하기 쉽도록 심플하면서도 세련된 UI 와 디자인 제공.<br>2. 효율성, 편의성, 접근성을 극대화 할 수 있도록 한다.|
-|타겟층|폭 넓은 디자인과 1인 가구 혹은 소규모 가족의 라이프스타일에 맞는 가구를 찾고있는 사용자 층.|
+|Teammates|Hamin Cheon, Hayoung Cheon, Doyoon Koo, Chankook Lee, Hyeonseob Kim, Hanna Yang, Hanbi Yoo|
+|Project Kind|Online Shopping Mall (Furniture)|
+|Duration|2023.01.04 ~ 2023.03.07|
+|Project Objective|1. Provide a simple and unique UI and design for users for their convenience.<br>2. Maximize effectiveness, convinience and access.|
+|Target|Users who are looking for a wide range of design or furnitures that suit for single-person household's or small size family's Lifestyle.|
 
 <br>
 <br>
 
-# 프로젝트 기획
+# Project Proposal
 
-* 개발 환경
+* Development Environment
 <img src="https://github.com/hykim-king/GAGOODA/blob/main/doc/develop-tool.png"  width="800" height="400"/>
 
 * WBS
@@ -43,23 +43,23 @@
 <br>
 <br>
 
-# 프로젝트 설계
+# Project Blueprint
 
 
-* 요구사항 정의  
+* Software Requirement Document 
 ⌞ [요구사항_정의서.xlm](https://github.com/hykim-king/GAGOODA/blob/main/doc/GAGOODA_%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%A0%95%EC%9D%98%EC%84%9C.xlsx "요구사항 정의서 파일")
 
 
-* 데이터 베이스 설계 (ERD)  
+* Database Blueprint/Entity Relationship Diagram (ERD)  
 ⌞ [데이터_베이스_설계서.xlm](https://github.com/hykim-king/GAGOODA/blob/main/doc/gagooda.png)
 
 <br>
 <br>
 
-# 기능 시연
-* 메인 페이지
+# Deonstration
+* Main Page
 <img src="https://github.com/hykim-king/GAGOODA/blob/main/doc/mainpage.gif"  width="800" height="400"/>
 
-* 마이 페이지
+* My Page
 <img src="https://github.com/hykim-king/GAGOODA/blob/main/doc/mypage.gif"  width="800" height="400"/>
    
