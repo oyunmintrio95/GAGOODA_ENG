@@ -5,21 +5,21 @@
       layout:decorate="~{/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>주문 완료 페이지</title>
+    <title>Order Completed</title>
 </head>
 <div layout:fragment="content">
     <div class="container">
-        <h1 class="text-center mt-2">주문 완료</h1>
-        <h3 class="text-center mt-2">저희 GAGOODA 쇼핑몰에서 주문해 주셔서 감사합니다!</h3>
+        <h1 class="text-center mt-2">Order Completed!</h1>
+        <h3 class="text-center mt-2">Thank you for your purchase at our GAGOODA Shopping Mall.</h3>
 
-        <h3 class="mt-4">주문하신 상품 목록</h3>
+        <h3 class="mt-4">Products</h3>
         <hr class="mb-0" style="margin-top: 0; background : #b68c68; height: 5px">
         <table class="table">
             <thead>
-            <th scope="col" th:text="'전체 '+${itemCount}+'개'"></th>
-            <th scope="col">상품 정보</th>
-            <th scope="col" class="text-center">수량</th>
-            <th scope="col" class="text-center">주문금액</th>
+            <th scope="col" th:text="'전체 '+${itemCount}"></th>
+            <th scope="col">Product Detail</th>
+            <th scope="col" class="text-center">Quantity</th>
+            <th scope="col" class="text-center">Price</th>
             </thead>
             <tbody>
             <tr th:each="orderDetail, stat :${orderDetailList}">
@@ -35,9 +35,9 @@
             </tbody>
         </table>
         <div class="float-end">
-            <div>총 주문 금액: <strong id="totalPrice" class="totalPrice" style="color: #B68C68" th:text="${totalPrice}"></strong> 원 </div>
+            <div>Subtotal: <strong id="totalPrice" class="totalPrice" style="color: #B68C68" th:text="${totalPrice}"></strong> Won </div>
         </div>
-        <button class="btn text-white" style="background-color: #B68C68;" th:onclick="location.href=[[@{'/order/user_yes/mypage/list.do'}]]">주문 목록 페이지</button>
+        <button class="btn text-white" style="background-color: #B68C68;" th:onclick="location.href=[[@{'/order/user_yes/mypage/list.do'}]]">Order List</button>
 
     </div>
 

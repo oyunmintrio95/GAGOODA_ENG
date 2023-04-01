@@ -5,34 +5,34 @@
       layout:decorate="~{/layout/mypageLayout}">
 <head>
     <meta charset="UTF-8">
-    <title>주문 상세보기</title>
+    <title>Order Detail</title>
 </head>
 <div layout:fragment="myPageContent">
-    <h1 class="mb-4"> 주문 상세보기</h1>
+    <h1 class="mb-4"> Order Detail</h1>
     <!--주문 일자, 번호, 상태-->
 
     <div class="d-flex justify-content-start align-items-center" style="background-color: #FFFAF5; height: 50px; font-weight: bold">
         <div class="mx-3">
-            주문 일자: <span th:text="${#calendars.format(order.regDate,'yyyy-MM-dd')}" id="regDate"></span>
+            Order Date: <span th:text="${#calendars.format(order.regDate,'yyyy-MM-dd')}" id="regDate"></span>
         </div>
         <div class="mx-3">
-            주문 번호: <span id="orderId"  th:text="${order.orderId}"></span>
+            Order ID: <span id="orderId"  th:text="${order.orderId}"></span>
         </div>
         <div class="mx-3">
-            주문 상태: <span id="oDet" th:text="${oCodeList[order.ODet.substring(1)].detName}"></span>
+            State: <span id="oDet" th:text="${oCodeList[order.ODet.substring(1)].detName}"></span>
         </div>
     </div>
     <!--주문 일자, 번호, 상태 end----------------->
     <!--상세 주문 물품 리스트-->
-    <h3 class="mt-4">주문 상품 정보</h3>
+    <h3 class="mt-4">Product Detail</h3>
     <div>
         <hr class="mb-0" style="margin-top: 0; background : #b68c68; height: 5px">
         <table class="table mt-0">
             <thead>
-                <th scope="col" class="text-center">순번</th>
-                <th scope="col">상품정보</th>
-                <th scope="col" class="text-center">수량</th>
-                <th scope="col" class="text-center">가격</th>
+                <th scope="col" class="text-center">No</th>
+                <th scope="col">Product</th>
+                <th scope="col" class="text-center">Quantity</th>
+                <th scope="col" class="text-center">Price</th>
             </thead>
             <tbody>
                 <tr class="align-middle" th:each="orderDetail, stat :${orderDetailList}">
@@ -43,17 +43,17 @@
                         <span th:text="${orderDetail.optionName}" id="optionName"></span>
                     </td>
                     <td class="text-center" th:text="${orderDetail.cnt}"></td>
-                    <td class="text-center" th:text="${orderDetail.totalPrice}+'원'"></td>
+                    <td class="text-center" th:text="${orderDetail.totalPrice}+'Won'"></td>
                     <td>
                         <div>
                             <button class="btn text-white" style="background-color: #B68C68;"
                                     th:classappend="${!(#strings.equals(delivery.DDet,'d3'))?'disabled':''}"
-                                    th:onclick="location.href=[[@{'/refund/user_yes/mypage/{orderDetailId}/register.do'(orderDetailId=${orderDetail.orderDetailId})}]]">교환/환불</button>
+                                    th:onclick="location.href=[[@{'/refund/user_yes/mypage/{orderDetailId}/register.do'(orderDetailId=${orderDetail.orderDetailId})}]]">Exchange/Refund</button>
                         </div>
                         <div class="mt-1">
                             <button class="btn border" data-bs-toggle="modal" style="background-color: #ffffff; color:#b68c68;"
                                     th:classappend="${!(#strings.equals(delivery.DDet,'d3'))?'disabled':''}"
-                                    th:data-bs-target="'#reviewRegisterModal'+${orderDetail.orderDetailId}">리뷰 작성하기</button>
+                                    th:data-bs-target="'#reviewRegisterModal'+${orderDetail.orderDetailId}">Review</button>
                             <th:block th:include="~{/review/register}"></th:block>
 <!--                            th:onclick="location.href=[[@{'/review/user_yes/{productCode}/register.do'(orderId=${order.orderId},productCode=${orderDetail.productCode})}]]"-->
                         </div>
@@ -63,14 +63,14 @@
         </table>
         <div class="d-flex flex-column align-items-end pt-3 px-5"  style="background-color: #FFFAF5">
             <div class="mb-3">
-                <b>총 주문 금액:</b> <span id="totalPrice" th:text="${order.totalPrice}"></span>원
+                <b>Subtotal:</b> <span id="totalPrice" th:text="${order.totalPrice}"></span>Won
             </div>
             <div class="mb-3">
                 <th:block th:if="${payment.amount != null}">
-                    <b>총 결제 금액:</b> <span id="pPaidPrice" th:text="${payment.amount}"></span>원
+                    <b>Total Payment:</b> <span id="pPaidPrice" th:text="${payment.amount}"></span>Won
                 </th:block>
                 <th:block th:unless="${payment.amount != null}">
-                    <b>총 결제 금액:</b> <span id="paidPrice" th:text="${order.totalPrice}"></span>원
+                    <b>Total Payment:</b> <span id="paidPrice" th:text="${order.totalPrice}"></span>Won
                 </th:block>
             </div>
         </div>
@@ -78,90 +78,90 @@
     <!--상세 주문 물품 리스트 end------------>
 
     <!--수령인 정보 ----------------------------------------------------->
-    <h3 class="mt-4">배송지 정보</h3>
+    <h3 class="mt-4">Delivery Info.</h3>
     <hr class="mb-0" style="margin-top: 0; background : #b68c68; height: 5px">
     <table class="table">
         <tr>
-            <th class="col-2">받는 사람</th>
+            <th class="col-2">Receiver</th>
             <td class="col-10" th:text="${order.receiverName}"></td>
         </tr>
         <tr>
-            <th>연락처</th>
+            <th>Phone Name</th>
             <td th:text="${order.receiverPhone}"></td>
         </tr>
         <tr>
-            <th>우편번호</th>
+            <th>Postcode</th>
             <td th:text="${order.postCode}"></td>
         </tr>
         <tr>
-            <th>주소</th>
+            <th>Address</th>
             <td th:text="${order.address}"></td>
         </tr>
         <tr>
-            <th>상세주소</th>
+            <th>Address Detail</th>
             <td th:text="${order.addressDetail}"></td>
         </tr>
         <tr>
-            <th>총 주문 금액</th>
+            <th>Subtotal</th>
             <td th:text="${order.totalPrice}"></td>
         </tr>
         <tr>
-            <th>엘레베이터</th>
+            <th>Elevator</th>
             <th:block th:if="${order.elevator == true}">
-                <td th:text="' 있음'"></td>
+                <td th:text="'Yes'"></td>
             </th:block>
             <th:block th:if="${order.elevator == false}">
-                <td th:text="'없음'"></td>
+                <td th:text="'No'"></td>
             </th:block>
         </tr>
         <tr>
-        <th>배송 요청사항</th>
+        <th>Delivery Request</th>
         <th:block th:if="${delivery.request != null}">
             <td th:text="${delivery.request}"></td>
         </th:block>
         <th:block th:unless="${delivery.request != null}">
-            <td th:text="'없음'"></td>
+            <td th:text="'None'"></td>
         </th:block>
     </tr>
     </table>
     <!--수령인 정보 end------------------------------------->
     <!--결제 정보-->
-    <h3 class="mt-4">결제 정보</h3>
+    <h3 class="mt-4">Payment Info.</h3>
     <hr class="mb-0" style="margin-top: 0; background : #b68c68; height: 5px">
     <table class="table">
         <tr>
-            <th class="col-2">결제자</th>
+            <th class="col-2">Buyer</th>
             <td class="col-10" th:text="${payment.buyerName}"></td>
         </tr>
         <tr>
-            <th>결제 수단</th>
+            <th>Purchase Method</th>
             <td th:text="${payment.payMethod}"></td>
         </tr>
         <tr>
-            <th>결제 카드사</th>
+            <th>Card Company</th>
             <td th:text="${payment.cardName}"></td>
         </tr>
     </table>
     <!--결제 정보 end--------------------->
     <!--카드 영수증-->
-    <h3 class="mt-4">결제영수증 정보</h3>
+    <h3 class="mt-4">Receipt</h3>
     <hr class="mb-0" style="margin-top: 0; background : #b68c68; height: 5px">
     <div class="d-flex justify-content-between align-items-center pt-3" style="background-color: #FFFAF5; height: 80px;">
-        <span class="ms-3">해당 주문건에 대해 구매 카드 영수증 확인이 가능합니다.</span>
-        <a class="receiptUrl btn text-white me-3" href="javascript:void(0)" th:data-receipt="${payment.receiptUrl}" style="background-color: #B68C68;">카드 영수증</a>
+        <span class="ms-3">You can check a card receipt for the order.</span>
+        <a class="receiptUrl btn text-white me-3" href="javascript:void(0)" th:data-receipt="${payment.receiptUrl}" style="background-color: #B68C68;">Card Receipt</a>
 
     </div>
     <!--button group-->
     <div class="d-flex justify-content-end mt-4 mb-5 " >
-        <button class="btn mx-3 text-white"  style="background-color: #B68C68;" th:onclick="location.href=[[@{'/order/user_yes/mypage/list.do'}]]">주문 목록 돌아가기</button>
+        <button class="btn mx-3 text-white"  style="background-color: #B68C68;" th:onclick="location.href=[[@{'/order/user_yes/mypage/list.do'}]]">Order List</button>
         <th:block th:if="${!(#strings.equals(order.ODet,'o4')||(#strings.equals(order.ODet,'o5')))}">
-            <button class="btn me-2 col-3" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;" th:onclick="cancelRecheck([[${order.orderId}]])">주문 취소 요청</button>
+            <button class="btn me-2 col-3" style="background-color: #FFFAF5; color: #B68C68; border-color:#eeeeee;" th:onclick="cancelRecheck([[${order.orderId}]])">Order Cancel Request</button>
         </th:block>
     </div>
     <!--button group end--------------------------------------->
     <script>
         function cancelRecheck(orderId){
-            if(confirm("주문을 정말로 취소하시겠습니까?")) {
+            if(confirm("Do you really want to cancel the order?")) {
                 location.href = '/order/user_yes/mypage/' + orderId + '/modify.do'
             }
         }

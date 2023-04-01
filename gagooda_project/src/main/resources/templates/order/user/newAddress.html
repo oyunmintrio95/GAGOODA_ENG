@@ -2,42 +2,42 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <form name="newAddressRegisterForm" action="/order/user_yes/addressRegister.do" class="container mt-5" method="post"  enctype="multipart/form-data">
   <div class="mb-3">
-    <label for="aname"  class="form-label">주소지 이름</label>
+    <label for="aname"  class="form-label">Address Name</label>
     <input type="text" name="aname"  class="form-control form-control-lg" id="aname" required>
   </div>
-  <label for="ipostCode"  class="form-label">우편번호</label>
+  <label for="ipostCode"  class="form-label">Postcode</label>
   <div class="input-group my-1">
-    <input type="button" style="background-color: #FFFAF5; color: #B68C68" onclick="DaumPostcode()" value="우편번호 찾기" class="d_btn input-group-text">
+    <input type="button" style="background-color: #FFFAF5; color: #B68C68" onclick="DaumPostcode()" value="Find Postcode" class="d_btn input-group-text">
     <input type="text" name="postCode" class="form-control form-control-lg" id="ipostCode" required>
   </div>
   <div class="my-3">
-    <label for="iaddress"  class="form-label">주소</label>
+    <label for="iaddress"  class="form-label">Address</label>
     <input type="text" name="address" class="form-control form-control-lg" id="iaddress" required>
   </div>
   <div class="my-3">
-    <label for="iaddressDetail"  class="form-label">상세주소</label>
+    <label for="iaddressDetail"  class="form-label">Address Detail</label>
     <input type="text" name="addressDetail" class="form-control form-control-lg" id="iaddressDetail" required>
   </div>
   <div class="my-3">
-    <label for="ireceiverName"  class="form-label">수령인 이름</label>
+    <label for="ireceiverName"  class="form-label">Receiver Name</label>
     <input type="text" name="receiverName" class="form-control form-control-lg" id="ireceiverName" required>
   </div>
   <div class="my-3">
-    <label for="ireceiverPhone"  class="form-label">수령인 전화번호</label>
+    <label for="ireceiverPhone"  class="form-label">Phone Number</label>
     <input type="text" id="ireceiverPhone" class="form-control form-control-lg" name="receiverPhone" required>
   </div>
   <div class="my-3">
-    <label for="home"  class="form-label">기본배송지 설정 여부</label>
+    <label for="home"  class="form-label">Default Address</label>
     <input type="checkbox" name="home" id="home" value="1">
   </div>
   <div class="my-3">
-    <label for="elevator"  class="form-label">엘레베이터 유무 여부</label>
+    <label for="elevator"  class="form-label">Elevator</label>
     <input type="checkbox" name="elevator" id="elevator" value="1">
   </div>
   <input type="hidden" name="userId" id="userId" class="form-control form-control-lg" th:value="${session.loginUser.userId}" readonly>
 
 
-  <button type="submit" data-bs-dismiss="modal" class="input-group-text" style="background-color: #FFFAF5; color: #B68C68" th:text="저장하기"></button>
+  <button type="submit" data-bs-dismiss="modal" class="input-group-text" style="background-color: #FFFAF5; color: #B68C68" th:text="Save"></button>
 </form>
 
 
